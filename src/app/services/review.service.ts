@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Review, ReviewRequest } from '../models/review';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Review, ReviewRequest } from '../models/review';
 })
 export class ReviewService {
 
-    private apiUrl = '/api/reviews';
+    private apiUrl = `${environment.apiUrl}/api/reviews`;
 
     constructor(private http: HttpClient) { }
 

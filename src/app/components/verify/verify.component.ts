@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-verify',
@@ -75,7 +76,7 @@ export class VerifyComponent implements OnInit {
             return;
         }
 
-        this.http.get('/api/verify', { params: { token }, responseType: 'text' }).subscribe({
+        this.http.get(`${environment.apiUrl}/api/verify`, { params: { token }, responseType: 'text' }).subscribe({
             next: () => {
                 this.success = true;
                 this.loading = false;
