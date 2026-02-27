@@ -41,17 +41,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authService.currentUser$.subscribe(user => {
       if (user && user.role === 'ADMIN') {
-        this.fetchUnreadCount(user.userId);
+        this.fetchUnreadCount();
         // Poll every 30 seconds for new notifications
-        setInterval(() => this.fetchUnreadCount(user.userId), 30000);
+        setInterval(() => this.fetchUnreadCount(), 30000);
       } else {
         this.unreadCount = 0;
       }
     });
   }
 
-  fetchUnreadCount(userId: number) {
-    this.notificationService.getUnreadCount(userId).subscribe(count => {
+  fetchUnreadCount() {
+    this.notificationService.getUnreadCount().subscribe(count => {
       this.unreadCount = count;
     });
   }

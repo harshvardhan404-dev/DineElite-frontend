@@ -12,15 +12,24 @@ export class ReviewService {
 
     constructor(private http: HttpClient) { }
 
-    addReview(review: ReviewRequest): Observable<Review> {
-        return this.http.post<Review>(this.apiUrl, review);
+    addReview(review: ReviewRequest, photos?: File[]): Observable<Review> {
+        const formData = new FormData();
+        formData.append('review', new Blob([JSON.stringify(review)], { type: 'application/json' }));
+
+        if (photos) {
+            photos.forEach(photo => formData.append('photos', photo));
+        }
+
+        return this.http.post<Review>(this.apiUrl, formData);
     }
 
     getRestaurantReviews(restaurantId: number): Observable<Review[]> {
         return this.http.get<Review[]>(`${this.apiUrl}/restaurant/${restaurantId}`);
     }
 
-    getUserReviews(userId: number): Observable<Review[]> {
-        return this.http.get<Review[]>(`${this.apiUrl}/user/${userId}`);
+    getUserReviews(): Observable<Review[]> {
+        // Updated to use authenticated context on backend if needed, 
+        // but for now keeping it simple as it might not be implemented yet on backend for authenticated user
+        return this.http.get<Review[]>(`${this.apiUrl}/user/me`);
     }
 }

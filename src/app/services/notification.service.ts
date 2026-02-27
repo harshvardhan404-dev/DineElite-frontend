@@ -10,12 +10,12 @@ export class NotificationService {
 
     constructor(private http: HttpClient) { }
 
-    getNotifications(userId: number): Observable<Notification[]> {
-        return this.http.get<Notification[]>(`/api/notifications/${userId}`);
+    getNotifications(): Observable<Notification[]> {
+        return this.http.get<Notification[]>('/api/notifications');
     }
 
-    getUnreadCount(userId: number): Observable<number> {
-        return this.http.get<number>(`/api/notifications/${userId}/unread-count`);
+    getUnreadCount(): Observable<number> {
+        return this.http.get<number>('/api/notifications/unread-count');
     }
 
     markAsRead(notificationId: number): Observable<void> {

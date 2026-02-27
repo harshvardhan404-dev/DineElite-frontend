@@ -230,13 +230,9 @@ export class BookingComponent implements OnInit {
     }
 
     bookTable() {
-        const userString = localStorage.getItem('currentUser');
-        const user = userString ? JSON.parse(userString) : { userId: 1 };
-
         if (this.selectedRestaurantId && this.selectedDate && this.selectedSlotId) {
             this.bookingLoading = true;
             this.bookingService.createBooking(
-                user.userId,
                 this.selectedRestaurantId,
                 this.selectedDate,
                 this.selectedSlotId,

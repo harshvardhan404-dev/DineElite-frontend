@@ -23,12 +23,11 @@ export class RestaurantDetailsComponent implements OnInit {
     isSubmitting = false;
 
     newReview: ReviewRequest = {
-        userId: 0,
         restaurantId: 0,
         rating: 5,
         content: '',
         photoUrls: []
-    };
+    } as any; // Cast as any to ignore userId which we are effectively removing
     newPhotoUrl = '';
 
     constructor(
@@ -46,11 +45,7 @@ export class RestaurantDetailsComponent implements OnInit {
             this.loadRestaurantData(restaurantId);
             this.loadReviews(restaurantId);
 
-            const user = this.authService.getCurrentUser();
-            if (user) {
-                this.newReview.userId = user.userId;
-                this.newReview.restaurantId = restaurantId;
-            }
+            this.newReview.restaurantId = restaurantId;
         }
     }
 

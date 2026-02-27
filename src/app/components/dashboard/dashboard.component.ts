@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
                         this.loadMenu(this.restaurant.id);
                         this.loadMyAds(this.restaurant.id);
                         this.loadReviews(this.restaurant.id);
-                        this.loadNotifications(user.userId);
+                        this.loadNotifications();
                     },
                     error: (err) => console.error('Error fetching restaurant', err)
                 });
@@ -87,15 +87,15 @@ export class DashboardComponent implements OnInit {
                         this.loadMenu(this.restaurant.id);
                         this.loadMyAds(this.restaurant.id);
                         this.loadReviews(this.restaurant.id);
-                        this.loadNotifications(fallbackUserId);
+                        this.loadNotifications();
                     }
                 });
             }
         });
     }
 
-    loadNotifications(userId: number) {
-        this.notificationService.getNotifications(userId).subscribe(notes => {
+    loadNotifications() {
+        this.notificationService.getNotifications().subscribe(notes => {
             this.notifications = notes;
             this.unreadNotifications = notes.filter((n: any) => !n.isRead).length;
         });
@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
             this.loadFloorPlan();
         }
         if (tab === 'notifications' && this.authService.getCurrentUser()) {
-            this.loadNotifications(this.authService.getCurrentUser().userId);
+            this.loadNotifications();
         }
     }
 

@@ -44,9 +44,8 @@ export class BookingService {
         return this.http.get<any[]>(`/api/table-layout/${restaurantId}/availability`, { params });
     }
 
-    createBooking(userId: number, restaurantId: number, date: string, slotId: number, guestCount: number, tableId?: number): Observable<any> {
+    createBooking(restaurantId: number, date: string, slotId: number, guestCount: number, tableId?: number): Observable<any> {
         let params = new HttpParams()
-            .set('userId', userId)
             .set('restaurantId', restaurantId)
             .set('date', date)
             .set('slotId', slotId)
@@ -59,8 +58,8 @@ export class BookingService {
         return this.http.get<any>('/api/booking/create', { params });
     }
 
-    getBookingHistory(userId: number): Observable<BookingHistory[]> {
-        return this.http.get<BookingHistory[]>(`/api/booking/history/${userId}`);
+    getBookingHistory(): Observable<BookingHistory[]> {
+        return this.http.get<BookingHistory[]>('/api/booking/history');
     }
 
     getPopularMenu(restaurantId: number): Observable<MenuItem[]> {

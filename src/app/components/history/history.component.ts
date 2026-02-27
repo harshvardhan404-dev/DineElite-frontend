@@ -25,10 +25,7 @@ export class HistoryComponent implements OnInit {
   }
 
   loadHistory() {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const userId = user.userId || 1; // Demo fallback
-
-    this.bookingService.getBookingHistory(userId).subscribe({
+    this.bookingService.getBookingHistory().subscribe({
       next: (data) => {
         this.bookings = data;
         this.loading = false;

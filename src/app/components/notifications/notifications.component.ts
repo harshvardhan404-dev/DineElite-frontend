@@ -110,19 +110,19 @@ export class NotificationsComponent implements OnInit {
     ngOnInit(): void {
         const user = this.authService.getCurrentUser();
         if (user) {
-            this.loadNotifications(user.userId);
-            this.loadUnreadCount(user.userId);
+            this.loadNotifications();
+            this.loadUnreadCount();
         }
     }
 
-    loadNotifications(userId: number): void {
-        this.notificationService.getNotifications(userId).subscribe(data => {
+    loadNotifications(): void {
+        this.notificationService.getNotifications().subscribe(data => {
             this.notifications = data;
         });
     }
 
-    loadUnreadCount(userId: number): void {
-        this.notificationService.getUnreadCount(userId).subscribe(count => {
+    loadUnreadCount(): void {
+        this.notificationService.getUnreadCount().subscribe(count => {
             this.unreadCount = count;
         });
     }
