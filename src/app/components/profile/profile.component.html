@@ -1,0 +1,64 @@
+<div class="container animate-in">
+    <header class="profile-header">
+        <h1 class="gradient-text">Account Settings</h1>
+        <p class="subtitle">Manage your profile and account preferences</p>
+    </header>
+
+    <div class="profile-card glass">
+        <div class="user-info">
+            <div class="avatar-large">
+                {{ user?.fullName?.charAt(0) || 'U' }}
+            </div>
+            <div class="text-details">
+                <h2>{{ user?.fullName }}</h2>
+                <p class="email">{{ user?.email }}</p>
+                <span class="role-badge">{{ user?.role }}</span>
+            </div>
+        </div>
+
+        <div class="settings-sections">
+            <div class="section">
+                <h3>Profile Information</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" [(ngModel)]="user.fullName" class="premium-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" [(ngModel)]="user.email" class="premium-input" disabled>
+                </div>
+
+                <!-- Dietary Preferences Section -->
+                <div *ngIf="user.role === 'CUSTOMER'" class="dietary-section">
+                    <h3>Dietary Preferences</h3>
+                    <div class="dietary-chips">
+                        <div class="chip" [class.active]="selectedDiets.includes('Vegan')"
+                            (click)="toggleDiet('Vegan')">Vegan</div>
+                        <div class="chip" [class.active]="selectedDiets.includes('Vegetarian')"
+                            (click)="toggleDiet('Vegetarian')">Vegetarian</div>
+                        <div class="chip" [class.active]="selectedDiets.includes('Gluten-Free')"
+                            (click)="toggleDiet('Gluten-Free')">Gluten-Free</div>
+                        <div class="chip" [class.active]="selectedDiets.includes('Nut Allergy')"
+                            (click)="toggleDiet('Nut Allergy')">Nut Allergy</div>
+                        <div class="chip" [class.active]="selectedDiets.includes('Dairy-Free')"
+                            (click)="toggleDiet('Dairy-Free')">Dairy-Free</div>
+                    </div>
+                    <button class="btn-premium" (click)="updateDietaryPreferences()" [disabled]="loading">
+                        {{ loading ? 'Updating...' : 'Save Preferences' }}
+                    </button>
+                </div>
+
+                <p class="note" style="margin-top: 20px;">* Personal details editing is currently being optimized. You
+                    can update your dietary profile above.</p>
+            </div>
+
+            <div class="danger-zone">
+                <h3>Danger Zone</h3>
+                <p>Once you delete your account, there is no going back. Please be certain.</p>
+                <button (click)="onDeleteAccount()" class="btn-delete-account">
+                    Permanently Delete My Account
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

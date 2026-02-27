@@ -1,0 +1,106 @@
+<div class="register-container">
+    <div class="register-card">
+        <h2>Join DineElite</h2>
+        <p class="subtitle">Create an account to start your premium experience</p>
+
+        <form (submit)="onSubmit($event)">
+            <div class="section-title">Personal Information</div>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" [(ngModel)]="fullName" required
+                    placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" [(ngModel)]="password" required
+                    placeholder="Create a password">
+            </div>
+
+            <div class="form-group">
+                <label for="role">Account Type</label>
+                <select id="role" name="role" [(ngModel)]="role">
+                    <option value="CUSTOMER">Customer</option>
+                    <option value="ADMIN">Restaurant Admin</option>
+                </select>
+            </div>
+
+            <!-- Dietary Preferences (Only for Customers) -->
+            <div *ngIf="role === 'CUSTOMER'" class="dietary-section">
+                <div class="section-title">Dietary Preferences</div>
+                <div class="dietary-chips">
+                    <div class="chip" [class.active]="selectedDiets.includes('Vegan')" (click)="toggleDiet('Vegan')">
+                        Vegan</div>
+                    <div class="chip" [class.active]="selectedDiets.includes('Vegetarian')"
+                        (click)="toggleDiet('Vegetarian')">Vegetarian</div>
+                    <div class="chip" [class.active]="selectedDiets.includes('Gluten-Free')"
+                        (click)="toggleDiet('Gluten-Free')">Gluten-Free</div>
+                    <div class="chip" [class.active]="selectedDiets.includes('Nut Allergy')"
+                        (click)="toggleDiet('Nut Allergy')">Nut Allergy</div>
+                    <div class="chip" [class.active]="selectedDiets.includes('Dairy-Free')"
+                        (click)="toggleDiet('Dairy-Free')">Dairy-Free</div>
+                </div>
+                <p class="helper-text">These will be automatically shared with the restaurant upon booking.</p>
+            </div>
+
+            <!-- Restaurant Profile Section (Only for Admins) -->
+            <div *ngIf="role === 'ADMIN'" class="restaurant-section">
+                <div class="section-divider"></div>
+                <div class="section-title">Restaurant Profile</div>
+
+                <div class="form-group">
+                    <label for="restaurantName">Restaurant Name</label>
+                    <input type="text" id="restaurantName" name="restaurantName" [(ngModel)]="restaurantName" required
+                        placeholder="e.g. The Grand Palace">
+                </div>
+
+                <div class="form-group">
+                    <label for="restaurantAddress">Address</label>
+                    <input type="text" id="restaurantAddress" name="restaurantAddress" [(ngModel)]="restaurantAddress"
+                        required placeholder="City, Area">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="openingTime">Opening Time</label>
+                        <input type="time" id="openingTime" name="openingTime" [(ngModel)]="openingTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="closingTime">Closing Time</label>
+                        <input type="time" id="closingTime" name="closingTime" [(ngModel)]="closingTime" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="restaurantImageUrl">Restaurant Image URL</label>
+                    <input type="url" id="restaurantImageUrl" name="restaurantImageUrl" [(ngModel)]="restaurantImageUrl"
+                        placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label for="restaurantDescription">Description</label>
+                    <textarea id="restaurantDescription" name="restaurantDescription"
+                        [(ngModel)]="restaurantDescription"
+                        placeholder="Brief description of your restaurant"></textarea>
+                </div>
+            </div>
+
+            <div class="error-message" *ngIf="error">{{ error }}</div>
+            <div class="success-message" *ngIf="message">{{ message }}</div>
+
+            <button type="submit" class="btn-register" [disabled]="loading">
+                <span *ngIf="!loading">Register</span>
+                <span *ngIf="loading">Creating Account...</span>
+            </button>
+        </form>
+
+        <div class="footer">
+            Already have an account? <a routerLink="/login">Login here</a>
+        </div>
+    </div>
+</div>

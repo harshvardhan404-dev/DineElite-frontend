@@ -1,0 +1,523 @@
+<div class="dashboard-container">
+    <div class="header">
+        <h1>{{ restaurant?.name || 'Restaurant' }} Control Center</h1>
+        <p>Manage your presence on DineElite</p>
+    </div>
+
+    <nav class="tabs-navigation">
+        <button class="tab-btn" [class.active]="activeTab === 'analytics'"
+            (click)="setTab('analytics')">Insights</button>
+        <button class="tab-btn" [class.active]="activeTab === 'floor-plan'" (click)="setTab('floor-plan')">🗺️ Floor
+            Plan</button>
+        <button class="tab-btn" [class.active]="activeTab === 'profile'" (click)="setTab('profile')">Edit
+            Profile</button>
+        <button class="tab-btn" [class.active]="activeTab === 'ads'" (click)="setTab('ads')">Post Ad</button>
+        <button class="tab-btn" [class.active]="activeTab === 'my-posts'" (click)="setTab('my-posts')">My Posts</button>
+        <button class="tab-btn" [class.active]="activeTab === 'notifications'" (click)="setTab('notifications')">
+            🔔 Alerts <span class="nav-badge" *ngIf="unreadNotifications > 0">{{ unreadNotifications }}</span>
+        </button>
+    </nav>
+
+    <!-- Analytics Tab -->
+    <div *ngIf="activeTab === 'analytics'" class="tab-content fade-in">
+        <div *ngIf="isLoading" class="loading-overlay">
+            <div class="loader"></div>
+            <p>Gathering deep insights...</p>
+        </div>
+
+        <div *ngIf="!isLoading">
+
+            <!-- Section 1: KPI Summary Cards -->
+            <div class="section-title">
+                <span class="section-icon">📊</span>
+                <h2>Performance Overview</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🗓️</div>
+                    <h3>Total Bookings</h3>
+                    <div class="value">{{totalBookings}}</div>
+                    <p>Reserved Tables</p>
+                </div>
+                <div class="stat-card accent-peak">
+                    <div class="stat-icon">🔥</div>
+                    <h3>Peak Slot</h3>
+                    <div class="value peak-value">{{peakSlot}}</div>
+                    <p>Most Popular Time</p>
+                </div>
+                <div class="stat-card accent-revenue">
+                    <div class="stat-icon">💰</div>
+                    <h3>Revenue</h3>
+                    <div class="value">₹{{revenue | number}}</div>
+                    <p>Total Estimated</p>
+                </div>
+                <div class="stat-card accent-util">
+                    <div class="stat-icon">⚡</div>
+                    <h3>Avg. Utilization</h3>
+                    <div class="value">{{utilization}}%</div>
+                    <div class="mini-bar-track">
+                        <div class="mini-bar-fill" [style.width.%]="utilization"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Charts Row -->
+            <div class="section-title">
+                <span class="section-icon">📈</span>
+                <h2>Detailed Analytics</h2>
+            </div>
+            <div class="analytics-grid">
+
+                <!-- Weekly Booking Trend Bar Chart -->
+                <div class="glass-card chart-section">
+                    <div class="card-header">
+                        <h3>Weekly Booking Trend</h3>
+                        <span class="badge">Last 7 days</span>
+                    </div>
+                    <div class="trend-chart">
+                        <div class="bar-item" *ngFor="let trend of dailyTrends; let i = index">
+                            <div class="bar" [style.height.%]="(trend.count / getMaxTrend()) * 100"
+                                [class.highlighted]="trend.count === getMaxTrend()"
+                                [style.animation-delay]="i * 0.08 + 's'">
+                                <span class="bar-value">{{trend.count}}</span>
+                            </div>
+                            <span class="bar-label">{{trend.date | date:'EEE'}}</span>
+                        </div>
+                        <div *ngIf="dailyTrends.length === 0" class="no-data">No trend data available yet</div>
+                    </div>
+                </div>
+
+                <!-- Donut Chart: Overall Utilization -->
+                <div class="glass-card donut-section">
+                    <div class="card-header">
+                        <h3>Overall Efficiency</h3>
+                        <span class="badge">Utilization</span>
+                    </div>
+                    <div class="donut-container">
+                        <svg viewBox="0 0 36 36" class="donut-chart">
+                            <path class="donut-ring" d="M18 2.0845
+                                   a 15.9155 15.9155 0 0 1 0 31.831
+                                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="donut-segment" [attr.stroke-dasharray]="utilization + ', 100'" d="M18 2.0845
+                                   a 15.9155 15.9155 0 0 1 0 31.831
+                                   a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="donut-center-text">
+                            <span class="donut-value">{{utilization}}%</span>
+                            <span class="donut-label">Occupied</span>
+                        </div>
+                    </div>
+                    <div class="donut-legend">
+                        <div class="legend-item"><span class="legend-dot active"></span> Utilized</div>
+                        <div class="legend-item"><span class="legend-dot idle"></span> Available</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Slot Utilization Heatmap Grid -->
+            <div class="section-title">
+                <span class="section-icon">🕐</span>
+                <h2>Slot Utilization Breakdown</h2>
+            </div>
+            <div class="glass-card slots-section">
+                <div class="card-header">
+                    <h3>Time Slot Performance</h3>
+                    <span class="badge">All Slots</span>
+                </div>
+                <div class="slots-grid">
+                    <div class="slot-card" *ngFor="let slot of slotUtilizations"
+                        [class.slot-hot]="slot.utilizationPercentage >= 75"
+                        [class.slot-warm]="slot.utilizationPercentage >= 40 && slot.utilizationPercentage < 75"
+                        [class.slot-cool]="slot.utilizationPercentage < 40">
+                        <div class="slot-radial">
+                            <svg viewBox="0 0 36 36" class="slot-ring-chart">
+                                <path class="slot-ring-bg"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="slot-ring-fill"
+                                    [attr.stroke-dasharray]="slot.utilizationPercentage + ', 100'"
+                                    [class.ring-hot]="slot.utilizationPercentage >= 75"
+                                    [class.ring-warm]="slot.utilizationPercentage >= 40 && slot.utilizationPercentage < 75"
+                                    [class.ring-cool]="slot.utilizationPercentage < 40"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <span class="slot-ring-value">{{slot.utilizationPercentage | number:'1.0-0'}}%</span>
+                        </div>
+                        <div class="slot-meta">
+                            <span class="slot-time-label">{{slot.slotTime}}</span>
+                            <span class="slot-status" *ngIf="slot.utilizationPercentage >= 75">🔥 Hot</span>
+                            <span class="slot-status"
+                                *ngIf="slot.utilizationPercentage >= 40 && slot.utilizationPercentage < 75">⚡
+                                Active</span>
+                            <span class="slot-status" *ngIf="slot.utilizationPercentage < 40">💤 Quiet</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slot-legend">
+                    <span class="slot-legend-item"><span class="legend-dot-sm hot"></span> High (75%+)</span>
+                    <span class="slot-legend-item"><span class="legend-dot-sm warm"></span> Medium (40-74%)</span>
+                    <span class="slot-legend-item"><span class="legend-dot-sm cool"></span> Low (&lt;40%)</span>
+                </div>
+            </div>
+            <!-- Section 4: Booking Occupancy Heatmap -->
+            <div class="section-title">
+                <span class="section-icon">🔥</span>
+                <h2>Booking Occupancy Heatmap</h2>
+            </div>
+            <div class="glass-card heatmap-section">
+                <div class="card-header">
+                    <h3>Weekly Peak Hours</h3>
+                    <span class="badge">Historical Data</span>
+                </div>
+                <div class="heatmap-container">
+                    <div class="heatmap-labels-row">
+                        <div class="heatmap-corner"></div>
+                        <div class="heatmap-label-slot" *ngFor="let slot of timeSlots">{{slot.substring(0, 5)}}</div>
+                    </div>
+                    <div class="heatmap-row" *ngFor="let day of dayNames; let dIdx = index">
+                        <div class="heatmap-label-day">{{day}}</div>
+                        <div class="heatmap-cell" *ngFor="let slot of timeSlots"
+                            [class.intensity-0]="getHeatmapIntensity(dIdx, slot) === 0"
+                            [class.intensity-1]="getHeatmapIntensity(dIdx, slot) === 1"
+                            [class.intensity-2]="getHeatmapIntensity(dIdx, slot) === 2"
+                            [class.intensity-3]="getHeatmapIntensity(dIdx, slot) === 3"
+                            [class.intensity-4]="getHeatmapIntensity(dIdx, slot) === 4"
+                            [title]="day + ' ' + slot + ': ' + getHeatmapCount(dIdx, slot) + ' bookings'">
+                        </div>
+                    </div>
+                </div>
+                <div class="heatmap-legend">
+                    <span>Less</span>
+                    <div class="legend-box intensity-0"></div>
+                    <div class="legend-box intensity-1"></div>
+                    <div class="legend-box intensity-2"></div>
+                    <div class="legend-box intensity-3"></div>
+                    <div class="legend-box intensity-4"></div>
+                    <span>More</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- FLOOR PLAN TAB           -->
+    <!-- ======================== -->
+    <div *ngIf="activeTab === 'floor-plan'" class="tab-content fade-in">
+        <div class="floor-plan-header">
+            <div class="section-title" style="margin-bottom: 0">
+                <span class="section-icon">🗺️</span>
+                <h2>Table Layout Manager</h2>
+            </div>
+            <div class="floor-plan-actions">
+                <button class="fp-btn fp-btn-add" (click)="showAddTableForm = !showAddTableForm">
+                    <span>+</span> Add Table
+                </button>
+                <button class="fp-btn fp-btn-save" [disabled]="!floorPlanDirty || floorPlanSaving"
+                    (click)="saveFloorPlan()">
+                    <span *ngIf="!floorPlanSaving">💾</span>
+                    <span *ngIf="floorPlanSaving" class="spinner-sm"></span>
+                    {{ floorPlanSaving ? 'Saving...' : 'Save Layout' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Table Form -->
+        <div class="add-table-form glass-card" *ngIf="showAddTableForm">
+            <h3>Add New Table</h3>
+            <div class="add-table-fields">
+                <div class="form-group">
+                    <label>Label</label>
+                    <input type="text" [(ngModel)]="newTableData.tableLabel" placeholder="e.g. T1, VIP, Bar">
+                </div>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" [(ngModel)]="newTableData.capacity" min="1" max="20">
+                </div>
+                <div class="form-group">
+                    <label>Shape</label>
+                    <select [(ngModel)]="newTableData.shape">
+                        <option value="round">⬤ Round</option>
+                        <option value="square">◼ Square</option>
+                        <option value="rectangle">▬ Rectangle</option>
+                    </select>
+                </div>
+                <button class="fp-btn fp-btn-confirm" (click)="addNewTable()">✓ Create</button>
+            </div>
+        </div>
+
+        <!-- Canvas + Sidebar Layout -->
+        <div class="floor-plan-layout">
+
+            <!-- The Floor Canvas -->
+            <div class="floor-canvas-wrapper">
+                <div class="floor-canvas" #floorCanvas (click)="deselectTable()">
+
+                    <!-- Grid overlay -->
+                    <div class="canvas-grid"></div>
+
+                    <!-- Draggable Tables -->
+                    <div *ngFor="let table of floorTables" class="floor-table" [ngClass]="getShapeClass(table)"
+                        [class.selected]="selectedTable?.tableId === table.tableId"
+                        [class.dragging]="isDragging && selectedTable?.tableId === table.tableId"
+                        [style.left.px]="table.posX" [style.top.px]="table.posY"
+                        (mousedown)="onTableMouseDown($event, table)"
+                        (click)="$event.stopPropagation(); selectTable(table)">
+                        <div class="table-inner">
+                            <span class="table-label">{{ table.tableLabel }}</span>
+                            <span class="table-capacity">{{ table.capacity }}p</span>
+                        </div>
+                        <!-- Chair indicators -->
+                        <div class="chairs" *ngIf="table.shape === 'round'">
+                            <span class="chair"
+                                *ngFor="let c of [].constructor(table.capacity > 8 ? 8 : table.capacity); let i = index"
+                                [style.transform]="'rotate(' + (i * (360 / (table.capacity > 8 ? 8 : table.capacity))) + 'deg) translateY(-48px)'">
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Empty state -->
+                    <div *ngIf="floorTables.length === 0" class="canvas-empty">
+                        <div class="empty-icon">🪑</div>
+                        <h3>No Tables Yet</h3>
+                        <p>Click "Add Table" to start designing your floor plan</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Properties Sidebar -->
+            <div class="floor-sidebar glass-card">
+                <div *ngIf="selectedTable; else noSelection">
+                    <h3 class="sidebar-title">Table Properties</h3>
+                    <div class="prop-group">
+                        <label>Label</label>
+                        <input type="text" [(ngModel)]="selectedTable.tableLabel"
+                            (ngModelChange)="floorPlanDirty = true">
+                    </div>
+                    <div class="prop-group">
+                        <label>Seats</label>
+                        <input type="number" [(ngModel)]="selectedTable.capacity" min="1" max="20"
+                            (ngModelChange)="floorPlanDirty = true">
+                    </div>
+                    <div class="prop-group">
+                        <label>Shape</label>
+                        <select [(ngModel)]="selectedTable.shape" (ngModelChange)="floorPlanDirty = true">
+                            <option value="round">⬤ Round</option>
+                            <option value="square">◼ Square</option>
+                            <option value="rectangle">▬ Rectangle</option>
+                        </select>
+                    </div>
+                    <div class="prop-group">
+                        <label>Position</label>
+                        <div class="pos-display">
+                            <span>X: {{ selectedTable.posX }}</span>
+                            <span>Y: {{ selectedTable.posY }}</span>
+                        </div>
+                    </div>
+                    <button class="fp-btn fp-btn-delete" (click)="deleteTableFromPlan(selectedTable)">
+                        🗑️ Delete Table
+                    </button>
+                </div>
+                <ng-template #noSelection>
+                    <div class="sidebar-empty">
+                        <div class="sidebar-empty-icon">👆</div>
+                        <h4>Select a Table</h4>
+                        <p>Click on a table to edit its properties, or drag to reposition.</p>
+                    </div>
+                </ng-template>
+
+                <!-- Legend -->
+                <div class="floor-legend">
+                    <h4>Shapes</h4>
+                    <div class="legend-row">
+                        <span class="legend-shape legend-round"></span> Round
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-shape legend-square"></span> Square
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-shape legend-rect"></span> Rectangle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Tab -->
+    <div *ngIf="activeTab === 'profile'" class="tab-content fade-in">
+        <div class="glass-card">
+            <h2>Restaurant Details</h2>
+            <form (ngSubmit)="updateProfile()">
+                <div class="form-group">
+                    <label>Restaurant Name</label>
+                    <input type="text" [(ngModel)]="restaurant.name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea rows="2" [(ngModel)]="restaurant.address" name="address" required></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Opening Time</label>
+                        <input type="time" [(ngModel)]="restaurant.openingTime" name="openingTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Closing Time</label>
+                        <input type="time" [(ngModel)]="restaurant.closingTime" name="closingTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Reservation Deposit (₹)</label>
+                        <input type="number" [(ngModel)]="restaurant.depositAmount" name="depositAmount">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="text" [(ngModel)]="restaurant.imageUrl" name="imageUrl" required>
+                </div>
+                <div class="image-preview-box" *ngIf="restaurant.imageUrl">
+                    <img [src]="restaurant.imageUrl" alt="Restaurant Preview">
+                    <span class="preview-label">Preview</span>
+                </div>
+                <div class="form-group">
+                    <label>Restaurant Description</label>
+                    <textarea [(ngModel)]="restaurant.description" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>House Rules (Shown to Diners)</label>
+                    <textarea [(ngModel)]="restaurant.houseRules" name="houseRules" rows="4"
+                        placeholder="e.g. 1. Smart casual dress code..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </form>
+
+            <div class="profile-actions"
+                style="margin-top: 2rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Looking for account
+                    security or deletion?</p>
+                <a routerLink="/profile" class="btn btn-secondary">Go to Account Settings</a>
+            </div>
+
+            <div class="menu-management-section" style="margin-top: 3rem;">
+                <h2>Signature Menu Items</h2>
+                <button class="btn-add-item" (click)="addMenuItem()">+ Add Signature Dish</button>
+                <div class="menu-list-admin">
+                    <div class="menu-card-admin" *ngFor="let item of menuItems">
+                        <div class="menu-item-fields">
+                            <input type="text" [(ngModel)]="item.itemName" placeholder="Item Name">
+                            <input type="number" [(ngModel)]="item.price" placeholder="Price">
+                            <label class="switch">
+                                <input type="checkbox" [(ngModel)]="item.isAvailable">
+                                <span class="slider round"></span>
+                                Available
+                            </label>
+                        </div>
+                        <div class="menu-item-actions">
+                            <button class="btn-update-item" (click)="updateMenuItem(item)">Update</button>
+                            <button class="btn-delete-item" (click)="deleteMenuItem(item.menuId)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advertisements Tab -->
+    <div *ngIf="activeTab === 'ads'" class="tab-content fade-in">
+        <div class="glass-card">
+            <h2>Create New Advertisement</h2>
+            <p style="margin-bottom: 1.5rem; color: rgba(255,255,255,0.6)">Post a photo or a reel to showcase your
+                offers and ambience.</p>
+            <form (ngSubmit)="postAd()">
+                <div class="form-group">
+                    <label>Media Type</label>
+                    <select [(ngModel)]="newAd.mediaType" name="mediaType">
+                        <option value="POST">Static Post (Image)</option>
+                        <option value="REEL">Video Reel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Media URL</label>
+                    <input type="text" [(ngModel)]="newAd.mediaUrl" name="mediaUrl" placeholder="https://..." required>
+                </div>
+                <div class="preview-container" [class.reel]="newAd.mediaType === 'REEL'" *ngIf="newAd.mediaUrl">
+                    <img *ngIf="newAd.mediaType === 'POST'" [src]="newAd.mediaUrl" alt="Ad Preview">
+                    <video *ngIf="newAd.mediaType === 'REEL'" [src]="newAd.mediaUrl" muted loop autoplay></video>
+                </div>
+                <div class="form-group">
+                    <label>Caption</label>
+                    <textarea rows="3" [(ngModel)]="newAd.caption" name="caption"
+                        placeholder="Write something catchy..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Publish Advertisement</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- My Posts Tab -->
+    <div *ngIf="activeTab === 'my-posts'" class="tab-content fade-in">
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>Our Published Highlights</h3>
+                <span class="badge">{{ myAds.length }} Posts</span>
+            </div>
+
+            <div class="my-posts-grid" *ngIf="myAds.length > 0; else noAds">
+                <div class="my-post-card" *ngFor="let ad of myAds">
+                    <div class="post-media">
+                        <img *ngIf="ad.mediaType === 'POST'" [src]="ad.mediaUrl" alt="Post">
+                        <video *ngIf="ad.mediaType === 'REEL'" [src]="ad.mediaUrl" muted loop autoplay></video>
+                        <span class="post-type-badge">{{ ad.mediaType }}</span>
+                    </div>
+                    <div class="post-info">
+                        <p class="post-caption">{{ ad.caption }}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="post-date">{{ ad.createdAt | date:'mediumDate' }}</span>
+                            <span style="font-size: 0.7rem; color: var(--primary);">Published</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noAds>
+                <div class="no-posts-placeholder">
+                    <div class="icon">📸</div>
+                    <h3>No posts yet</h3>
+                    <p>Start sharing your restaurant's story by posting your first advertisement.</p>
+                    <button class="btn-submit" style="width: auto; padding: 0.8rem 2rem;" (click)="setTab('ads')">Post
+                        Now</button>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+    <!-- Notifications Tab -->
+    <div *ngIf="activeTab === 'notifications'" class="tab-content fade-in">
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>Admin Notifications</h3>
+                <span class="badge" *ngIf="unreadNotifications > 0">{{ unreadNotifications }} Unread</span>
+            </div>
+
+            <div class="notifications-list-admin" *ngIf="notifications.length > 0; else noNotes">
+                <div class="notification-item-admin" *ngFor="let note of notifications" [class.unread]="!note.isRead"
+                    (click)="markAsRead(note)">
+                    <div class="note-icon">📅</div>
+                    <div class="note-details">
+                        <p class="note-message">{{ note.message }}</p>
+                        <span class="note-time">{{ note.createdAt | date:'mediumDate' }} • {{ note.createdAt |
+                            date:'shortTime' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noNotes>
+                <div class="no-posts-placeholder">
+                    <div class="icon">✨</div>
+                    <h3>No notifications</h3>
+                    <p>When users book tables or interact with your restaurant, you'll see alerts here.</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

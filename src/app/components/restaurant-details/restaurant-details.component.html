@@ -1,0 +1,158 @@
+<div class="container animate-in">
+    <!-- Hero Header -->
+    <div class="details-hero glass"
+        [style.background-image]="'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url(' + restaurant?.imageUrl + ')'">
+        <div class="hero-content">
+            <nav class="breadcrumb">
+                <a routerLink="/booking">Discovery</a> / <span class="current">{{ restaurant?.name }}</span>
+            </nav>
+            <h1 class="gradient-text huge-title">{{ restaurant?.name }}</h1>
+            <p class="description-large">{{ restaurant?.description }}</p>
+
+            <div class="meta-row">
+                <div class="meta-item glass-compact">
+                    <span class="icon">📍</span>
+                    <span>{{ restaurant?.address }}</span>
+                </div>
+                <div class="meta-item glass-compact">
+                    <span class="icon">🕒</span>
+                    <span>{{ restaurant?.openingTime }} - {{ restaurant?.closingTime }}</span>
+                </div>
+                <div class="meta-item glass-compact">
+                    <span class="icon">💳</span>
+                    <span>₹{{ restaurant?.depositAmount }} Deposit</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" (click)="bookNow()">Reserve a Table</button>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="details-grid">
+        <!-- left: Menu Gallery -->
+        <main class="menu-explorer">
+            <div class="section-header">
+                <h2 class="gradient-text">Signature Menu Items</h2>
+                <div class="badge badge-primary">Chef's Choice</div>
+            </div>
+
+            <div class="menu-grid" *ngIf="!loading; else loadingState">
+                <div *ngFor="let item of menuItems" class="menu-card-ultra glass">
+                    <div class="item-visual">
+                        <span class="tag">Signature</span>
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">{{ item.itemName }}</h3>
+                        <div class="item-footer">
+                            <span class="price">₹{{ item.price }}</span>
+                            <button class="btn btn-secondary btn-fav" title="Add to Favorites">
+                                <span class="heart-icon">❤️</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #loadingState>
+                <div class="loading-box glass">
+                    <div class="spinner"></div>
+                    <p>Fetching our finest dishes...</p>
+                </div>
+            </ng-template>
+        </main>
+
+        <!-- right: Info Sidebar -->
+        <aside class="info-sidebar">
+            <div class="section-box glass">
+                <h3>House Rules</h3>
+                <ul class="fancy-list">
+                    <li *ngFor="let rule of (restaurant?.houseRules?.split('\n') || [])">
+                        <span class="dot"></span> {{ rule }}
+                    </li>
+                    <li *ngIf="!restaurant?.houseRules">
+                        <span class="dot"></span> Smart casual dress code
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-box glass highlight-box">
+                <h3>DineElite Benefit</h3>
+                <p>Secure this table now and get 10% off on your signature drinks.</p>
+                <button class="btn btn-secondary btn-full" (click)="bookNow()">Secure Table</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section glass mt-4">
+        <div class="section-header">
+            <h2 class="gradient-text">Guest Experiences</h2>
+            <div class="badge badge-primary">{{ reviews.length }} Reviews</div>
+        </div>
+
+        <div class="reviews-grid">
+            <!-- Review Form -->
+            <div class="review-compose glass animate-in">
+                <h3>Share Your Experience</h3>
+                <div class="rating-input">
+                    <label>Rating:</label>
+                    <div class="stars">
+                        <span *ngFor="let s of [1,2,3,4,5]" (click)="newReview.rating = s"
+                            [class.active]="newReview.rating >= s">★</span>
+                    </div>
+                </div>
+                <textarea class="glass-input" rows="3" [(ngModel)]="newReview.content"
+                    placeholder="Tell others about your experience..."></textarea>
+
+                <div class="photo-upload-section">
+                    <label>Photos (URLs):</label>
+                    <div class="photo-input-group">
+                        <input type="text" class="glass-input" [(ngModel)]="newPhotoUrl"
+                            placeholder="https://image-url.com">
+                        <button class="btn btn-secondary btn-sm" (click)="addPhotoUrl()">Add</button>
+                    </div>
+                    <div class="photo-previews">
+                        <div *ngFor="let url of newReview.photoUrls; let i = index" class="photo-preview-item">
+                            <img [src]="url" alt="Preview">
+                            <button class="remove-btn" (click)="removePhotoUrl(i)">×</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-full mt-3" [disabled]="isSubmitting" (click)="submitReview()">
+                    {{ isSubmitting ? 'Posting...' : 'Post Review' }}
+                </button>
+            </div>
+
+            <!-- Review List -->
+            <div class="reviews-list">
+                <div *ngFor="let review of reviews" class="review-card animate-in">
+                    <div class="review-header">
+                        <div class="user-info">
+                            <div class="user-avatar">{{ review.userName.charAt(0) }}</div>
+                            <div class="user-meta">
+                                <span class="user-name">{{ review.userName }}</span>
+                                <span class="review-date">{{ review.createdAt | date:'mediumDate' }}</span>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <span *ngFor="let s of [1,2,3,4,5]" [class.filled]="review.rating >= s">★</span>
+                        </div>
+                    </div>
+                    <p class="review-content">{{ review.content }}</p>
+                    <div class="review-photos" *ngIf="review.photoUrls.length > 0">
+                        <img *ngFor="let photo of review.photoUrls" [src]="photo" alt="Experience Photo"
+                            class="review-photo">
+                    </div>
+                </div>
+
+                <div *ngIf="reviews.length === 0" class="no-reviews">
+                    <p>No reviews yet. Be the first to share your experience!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

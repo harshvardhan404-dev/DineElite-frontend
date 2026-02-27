@@ -1,0 +1,191 @@
+/* Global Styles */
+.badge {
+    background: var(--primary);
+    color: black;
+    font-size: 0.70rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 6px;
+    vertical-align: middle;
+    box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.4);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Navbar Ultra Styling */
+.nav-ultra {
+    position: sticky;
+    top: 1rem;
+    margin: 0 2rem 3rem;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: var(--transition-smooth);
+}
+
+.brand-section a {
+    font-size: 1.6rem;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: -0.05em;
+    font-family: 'Outfit', sans-serif;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item-link {
+    padding: 0.6rem 1.25rem;
+    border-radius: 12px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.nav-item-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.nav-item-link.active-link {
+    background: rgba(var(--primary-h), var(--primary-s), var(--primary-l), 0.1);
+    color: var(--primary);
+    border-color: rgba(var(--primary-h), var(--primary-s), var(--primary-l), 0.2);
+}
+
+.admin-dashboard-link {
+    background: linear-gradient(135deg, rgba(var(--primary-h), var(--primary-s), var(--primary-l), 0.15), transparent);
+    border: 1px solid rgba(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+    color: var(--primary);
+}
+
+.admin-dashboard-link:hover {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 8px 20px -5px var(--primary-glow);
+}
+
+.btn-logout {
+    color: var(--text-muted) !important;
+    font-weight: 500;
+}
+
+.btn-logout:hover {
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .nav-ultra {
+        top: 0;
+        margin: 0;
+        border-radius: 0;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        z-index: 1001;
+    }
+
+    .hamburger {
+        width: 24px;
+        height: 18px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: var(--primary);
+        border-radius: 2px;
+        transition: var(--transition-smooth);
+    }
+
+    .hamburger.open span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
+        background: rgba(2, 6, 23, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem;
+        gap: 1.5rem;
+        transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        border-left: 1px solid var(--glass-border);
+    }
+
+    .nav-links.mobile-active {
+        right: 0;
+    }
+
+    .nav-item-link {
+        font-size: 1.2rem;
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .menu-toggle {
+        display: none;
+    }
+
+    .nav-container {
+        display: contents;
+        /* Fallback for desktop layout */
+    }
+}

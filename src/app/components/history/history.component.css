@@ -1,0 +1,160 @@
+.stats-box {
+    padding: 1rem 2.5rem;
+    text-align: center;
+}
+
+.stats-box .label {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.stats-box .value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.history-list-ultra {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.booking-card-ultra {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 0;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+.card-visual {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.15));
+    position: relative;
+    border-right: 1px solid var(--glass-border);
+}
+
+.status-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-content {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-header h3 {
+    font-size: 1.5rem;
+}
+
+.address-small {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.detail-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+}
+
+.detail-box-ultra {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tag-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.tag-val {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.btn-danger-soft {
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.btn-danger-soft:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+.policy-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.cancelled {
+    opacity: 0.7;
+    filter: grayscale(0.5);
+}
+
+.cancelled-msg {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.status-confirmed {
+    background: #10b981;
+    color: #fff;
+}
+
+.status-pending {
+    background: #f59e0b;
+    color: #000;
+}
+
+.status-cancelled {
+    background: #ef4444;
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .booking-card-ultra {
+        grid-template-columns: 1fr;
+    }
+
+    .card-visual {
+        height: 80px;
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+    }
+
+    .detail-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}

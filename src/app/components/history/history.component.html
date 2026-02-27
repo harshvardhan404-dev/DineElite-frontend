@@ -1,0 +1,74 @@
+<div class="container animate-in">
+    <header class="discovery-header">
+        <div class="header-text">
+            <h1 class="gradient-text huge-title">Your Reservations</h1>
+            <p style="color: var(--text-muted)">A timeline of your refined dining experiences.</p>
+        </div>
+        <div class="stats-box glass">
+            <span class="label">Total Bookings</span>
+            <span class="value">{{ bookings.length }}</span>
+        </div>
+    </header>
+
+    <div *ngIf="loading" class="loading-box glass">
+        <div class="spinner"></div>
+        <p>Retrieving your confirmed spots...</p>
+    </div>
+
+    <div *ngIf="!loading && bookings.length === 0" class="empty-results glass">
+        <div class="huge-icon">📅</div>
+        <h2>No plans yet?</h2>
+        <p>Discover the finest restaurants and secure your table today.</p>
+        <button class="btn btn-primary" routerLink="/booking">Start Discovery</button>
+    </div>
+
+    <div class="history-list-ultra" *ngIf="!loading && bookings.length > 0">
+        <div *ngFor="let booking of bookings" class="booking-card-ultra glass"
+            [class.cancelled]="booking.status === 'CANCELLED'">
+            <div class="card-visual">
+                <div class="status-overlay">
+                    <div class="badge" [ngClass]="getStatusClass(booking.status)">
+                        {{ booking.status }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-content">
+                <div class="card-header">
+                    <h3 class="gradient-text">{{ booking.restaurantName }}</h3>
+                    <p class="address-small">{{ booking.address }}</p>
+                </div>
+
+                <div class="detail-grid-compact">
+                    <div class="detail-box-ultra">
+                        <span class="tag-label">Date</span>
+                        <span class="tag-val">{{ booking.bookingDate }}</span>
+                    </div>
+                    <div class="detail-box-ultra">
+                        <span class="tag-label">Time</span>
+                        <span class="tag-val">{{ booking.startTime }} - {{ booking.endTime }}</span>
+                    </div>
+                    <div class="detail-box-ultra">
+                        <span class="tag-label">Guests</span>
+                        <span class="tag-val">{{ booking.guestCount }} Persons</span>
+                    </div>
+                    <div class="detail-box-ultra">
+                        <span class="tag-label">Deposit</span>
+                        <span class="tag-val">₹{{ booking.depositAmount }}</span>
+                    </div>
+                </div>
+
+                <div class="card-actions" *ngIf="booking.status === 'CONFIRMED'">
+                    <button class="btn btn-secondary btn-danger-soft" (click)="cancelBooking(booking.bookingId)">
+                        Cancel Reservation
+                    </button>
+                    <p class="policy-note">* Cancellation allowed up to 1-hour before slot start.</p>
+                </div>
+
+                <div class="card-footer-status" *ngIf="booking.status === 'CANCELLED'">
+                    <p class="cancelled-msg">This reservation was cancelled. Deposit has been processed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<section class="feed-section">
+    <div class="section-header">
+        <h2 class="premium-title">Elite Moments</h2>
+        <p class="premium-subtitle">Experience the finest dining highlights from our partners</p>
+    </div>
+
+    <div class="instagram-feed" *ngIf="advertisements.length > 0; else noAds">
+        <div class="feed-item" *ngFor="let ad of advertisements">
+            <div class="post-header">
+                <div class="restaurant-info">
+                    <div class="restaurant-avatar" [routerLink]="['/details', ad.restaurantId]">{{
+                        ad.restaurantName.charAt(0) }}</div>
+                    <span class="restaurant-name" [routerLink]="['/details', ad.restaurantId]">{{ ad.restaurantName
+                        }}</span>
+                </div>
+                <div class="post-options">•••</div>
+            </div>
+
+            <div class="post-media-container" (dblclick)="openAd(ad)">
+                <img *ngIf="ad.mediaType === 'POST'" [src]="ad.mediaUrl" [alt]="ad.caption" loading="lazy">
+                <div *ngIf="ad.mediaType === 'REEL'" class="video-wrapper">
+                    <video [src]="ad.mediaUrl" muted loop autoplay playsinline></video>
+                    <div class="reel-badge">REEL</div>
+                </div>
+            </div>
+
+            <div class="post-actions">
+                <div class="main-actions">
+                    <span class="action-icon" [class.liked]="ad.isLiked" (click)="toggleLike(ad)">
+                        {{ ad.isLiked ? '❤️' : '🤍' }}
+                    </span>
+                    <span class="action-icon" (click)="toggleCommentSection(ad)">💬</span>
+                    <span class="action-icon">✈️</span>
+                </div>
+                <span class="action-icon">🔖</span>
+            </div>
+
+            <div class="post-content">
+                <p class="post-likes"><b>{{ ad.likes }} likes</b></p>
+                <div class="post-description">
+                    <span class="restaurant-name-inline" [routerLink]="['/details', ad.restaurantId]">
+                        {{ ad.restaurantName }}
+                    </span>
+                    <span class="caption-text">{{ ad.caption }}</span>
+                </div>
+
+                <div class="comments-section" *ngIf="ad.showComments">
+                    <div class="comments-list">
+                        <div class="comment-item" *ngFor="let comm of ad.comments">
+                            <b>{{ comm.userName }}</b> {{ comm.content }}
+                        </div>
+                    </div>
+                    <div class="comment-input-wrapper">
+                        <input type="text" [(ngModel)]="ad.newComment" placeholder="Add a comment..."
+                            (keyup.enter)="addComment(ad)">
+                        <button (click)="addComment(ad)" [disabled]="!ad.newComment.trim()">Post</button>
+                    </div>
+                </div>
+
+                <span class="post-time">{{ ad.createdAt | date:'mediumDate' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noAds>
+        <div class="no-ads-container glass">
+            <div class="emoji">✨</div>
+            <h3>Discoveries Await</h3>
+            <p>Our partners are preparing their finest moments. Check back soon for exclusive highlights.</p>
+        </div>
+    </ng-template>
+</section>

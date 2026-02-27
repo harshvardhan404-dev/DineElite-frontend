@@ -1,0 +1,221 @@
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.profile-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.profile-card {
+    padding: 2.5rem;
+    border-radius: 24px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.avatar-large {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--primary), #d4af37);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: black;
+    box-shadow: 0 8px 30px rgba(var(--primary-rgb), 0.3);
+}
+
+.text-details h2 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.email {
+    color: var(--text-muted);
+    margin: 0.2rem 0 0.8rem;
+}
+
+.role-badge {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.section {
+    margin-bottom: 3rem;
+}
+
+.section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.premium-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    cursor: not-allowed;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.danger-zone {
+    margin-top: 4rem;
+    padding: 2rem;
+    border: 1px dashed #ef4444;
+    border-radius: 16px;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.danger-zone h3 {
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.danger-zone p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-delete-account {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-delete-account:hover {
+    background: #ef4444;
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.dietary-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dietary-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 1.5rem 0;
+}
+
+.chip {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chip:hover {
+    border-color: var(--primary);
+    color: white;
+}
+
+.chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: black;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+}
+
+.btn-premium {
+    background: linear-gradient(135deg, var(--primary), #d4af37);
+    color: black;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.4);
+}
+
+.btn-premium:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    .profile-card {
+        padding: 1.5rem;
+    }
+
+    .user-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .avatar-large {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+    }
+
+    .text-details h2 {
+        font-size: 1.6rem;
+    }
+}

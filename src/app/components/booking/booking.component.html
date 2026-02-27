@@ -1,0 +1,254 @@
+<div class="container animate-in">
+    <!-- Discovery Header -->
+    <header class="discovery-header">
+        <div class="header-text">
+            <h1 class="gradient-text huge-title">Premium Discovery</h1>
+            <p style="color: var(--text-muted)">10+ Handpicked Restaurants in {{ searchQuery ? searchQuery : 'all
+                locations' }}</p>
+        </div>
+        <div class="search-sort-ultra glass">
+            <div class="search-group">
+                <span class="icon">🔍</span>
+                <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()"
+                    placeholder="Search by name or city..." class="ultra-input">
+            </div>
+            <div class="filter-group">
+                <span class="label">Sort By:</span>
+                <select [(ngModel)]="sortBy" (change)="applyFilters()" class="ultra-select">
+                    <option>Recommended</option>
+                    <option>Near Me</option>
+                    <option>Deposit: Low to High</option>
+                    <option>Name: A-Z</option>
+                </select>
+            </div>
+            <button class="btn-near-me" [class.loading]="locating" (click)="locateUser()" [disabled]="locating">
+                <span class="icon">{{ locating ? '⌛' : '📍' }}</span>
+                <span class="text">{{ userLatitude ? 'Location Found' : 'Dine Near Me' }}</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- AI Personalized Recommendations Section -->
+    <section class="recommended-section animate-in" *ngIf="recommendedRestaurants.length > 0 && !reservationTarget">
+        <div class="section-badge">✨ FOR YOU</div>
+        <h2 class="section-title">Personalized for You</h2>
+        <div class="recommendations-container horizontal-scroll">
+            <div *ngFor="let restaurant of recommendedRestaurants" class="recommendation-card glass-compact"
+                (click)="openReserver(restaurant)">
+                <div class="rec-image">
+                    <img [src]="restaurant.imageUrl" [alt]="restaurant.name">
+                    <div class="rec-cuisine">{{ restaurant.cuisine }}</div>
+                </div>
+                <div class="rec-info">
+                    <h4 class="rec-name">{{ restaurant.name }}</h4>
+                    <p class="rec-reason">Because you liked {{ restaurant.cuisine }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ultra-Premium 3-Card Grid -->
+    <div *ngIf="!reservationTarget" class="restaurant-grid">
+        <div *ngFor="let restaurant of filteredRestaurants" class="restaurant-card-ultra glass">
+
+            <!-- TOP SECTION: Image -->
+            <div class="card-section-top">
+                <img [src]="restaurant.imageUrl" [alt]="restaurant.name">
+                <div class="badge-row">
+                    <div class="badge badge-primary">★ 4.9 Premium</div>
+                    <div class="status-badge-live">Live Now</div>
+                </div>
+            </div>
+
+            <!-- MIDDLE SECTION: Details & Info -->
+            <div class="card-section-middle">
+                <div class="card-meta">
+                    <h3 class="card-title">{{ restaurant.name }}</h3>
+                    <p class="restaurant-description">{{ restaurant.description }}</p>
+                </div>
+
+                <div class="detail-icons-row">
+                    <div class="icon-item">
+                        <span class="icon">📍</span>
+                        <span class="text">
+                            {{ restaurant.address }}
+                            <span *ngIf="userLatitude && userLongitude" class="distance-badge">
+                                • {{ calculateDistance(userLatitude, userLongitude, restaurant.latitude,
+                                restaurant.longitude).toFixed(1) }} km
+                            </span>
+                        </span>
+                    </div>
+                    <div class="icon-item">
+                        <span class="icon">🕒</span>
+                        <span class="text">{{ restaurant.openingTime }} - {{ restaurant.closingTime }}</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary btn-full" [routerLink]="['/details', restaurant.id]">
+                    View Menu & Details
+                </button>
+            </div>
+
+            <!-- BOTTOM SECTION: Booking Action -->
+            <div class="card-section-bottom">
+                <div class="deposit-meta">
+                    <span class="dep-label">Secured Deposit</span>
+                    <span class="dep-val">₹{{ restaurant.depositAmount }}</span>
+                </div>
+                <button class="btn btn-primary" (click)="openReserver(restaurant)">
+                    Book Now
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="filteredRestaurants.length === 0" class="empty-results glass">
+            <div class="huge-icon">🍽️</div>
+            <h2>No restaurants found</h2>
+            <p>Try adjusting your search query or filters.</p>
+            <button class="btn btn-secondary" (click)="searchQuery=''; applyFilters()">Clear Filters</button>
+        </div>
+    </div>
+
+    <!-- Reservation Overlay (Enhanced) -->
+    <div *ngIf="reservationTarget" class="modal-overlay">
+
+        <!-- External Header (Requested by User) -->
+        <div class="modal-external-header">
+            <h2>Secure Your Experience</h2>
+            <p>You are booking a table at {{ reservationTarget.name }}</p>
+        </div>
+
+        <div class="modal-content glass animate-in premium-modal">
+
+            <!-- Header Section -->
+            <div class="modal-header-hero"
+                [style.backgroundImage]="'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(' + reservationTarget.imageUrl + ')'">
+                <div class="header-content">
+                    <span class="badge badge-primary">Premium Partner</span>
+                    <h2 class="restaurant-title">{{ reservationTarget.name }}</h2>
+                    <p class="restaurant-location">📍 {{ reservationTarget.address }}</p>
+                    <div class="rating-strip">
+                        <span class="star">★</span> 4.9 (500+ Reviews)
+                    </div>
+                </div>
+            </div>
+
+            <div class="reservation-body">
+                <h3 class="section-title">Complete Your Reservation</h3>
+
+                <div class="form-grid">
+                    <!-- Date Selection -->
+                    <div class="form-group">
+                        <label>Date</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📅</span>
+                            <input type="date" [(ngModel)]="selectedDate" (ngModelChange)="onParamsChange()"
+                                class="premium-input">
+                        </div>
+                    </div>
+
+                    <!-- Guest Count -->
+                    <div class="form-group">
+                        <label>Guests</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">👥</span>
+                            <input type="number" [(ngModel)]="guestCount" (ngModelChange)="onParamsChange()" min="1"
+                                max="8" class="premium-input" placeholder="2">
+                        </div>
+                        <span class="helper-text">Max 8 guests</span>
+                    </div>
+
+                    <!-- Time Slot Dropdown -->
+                    <div class="form-group full-width">
+                        <label>Preferred Time</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">⏰</span>
+                            <select [(ngModel)]="selectedSlotId" (change)="onSlotSelected()"
+                                class="premium-input premium-select" [disabled]="!availableSlots.length">
+                                <option [ngValue]="null" disabled selected>
+                                    {{ bookingLoading ? 'Checking availability...' : (availableSlots.length ? 'Select a
+                                    time slot' : 'No slots available') }}
+                                </option>
+                                <option *ngFor="let slot of availableSlots" [ngValue]="slot.slotId">
+                                    {{ slot.startTime }} - {{ slot.endTime }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Table Selection (Floor Plan) -->
+                    <div class="form-group full-width" *ngIf="selectedSlotId && !bookingLoading">
+                        <label class="floor-plan-label">
+                            Pick Your Table (Optional)
+                            <span *ngIf="selectedTableId" class="selected-badge">Table {{ selectedTableId }}
+                                Selected</span>
+                        </label>
+
+                        <div class="floor-plan-container glass">
+                            <!-- Loading Overlay -->
+                            <div class="floor-loading" *ngIf="fetchingTables">
+                                <span class="spinner"></span>
+                                <p>Loading Floor Plan...</p>
+                            </div>
+
+                            <!-- Canvas -->
+                            <div class="floor-canvas" *ngIf="!fetchingTables && floorTables.length > 0">
+                                <div *ngFor="let table of floorTables" class="floor-table"
+                                    [class.available]="!table.isBooked && table.hasCapacity"
+                                    [class.occupied]="table.isBooked"
+                                    [class.wrong-size]="!table.isBooked && !table.hasCapacity"
+                                    [class.selected]="selectedTableId === table.tableId"
+                                    [class.round]="table.shape === 'round'" [class.square]="table.shape === 'square'"
+                                    [class.rectangle]="table.shape === 'rectangle'" [style.left.px]="table.posX"
+                                    [style.top.px]="table.posY" (click)="selectFloorTable(table)"
+                                    [title]="table.isBooked ? 'Table is already booked' : (!table.hasCapacity ? 'Insufficient capacity' : 'Available')">
+                                    <span class="table-label">{{ table.tableLabel }}</span>
+                                    <div class="capacity-dots">
+                                        <div *ngFor="let i of [].constructor(table.capacity)" class="dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empty/Error Space -->
+                            <div class="floor-empty" *ngIf="!fetchingTables && floorTables.length === 0">
+                                <p>No layout data available for this restaurant.</p>
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="floor-legend" *ngIf="floorTables.length > 0">
+                                <div class="legend-item"><span class="dot available"></span> Available</div>
+                                <div class="legend-item"><span class="dot occupied"></span> Occupied</div>
+                                <div class="legend-item"><span class="dot wrong-size"></span> Wrong Size</div>
+                                <div class="legend-item"><span class="dot selected"></span> Your Pick</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deposit Summary -->
+                <div class="deposit-summary-box">
+                    <div class="deposit-row">
+                        <span>Reservation Deposit</span>
+                        <span class="amount">₹{{ reservationTarget.depositAmount }}</span>
+                    </div>
+                    <p class="deposit-note">Fully redeemable against your final bill.</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="modal-actions-premium">
+                    <button class="btn btn-text" (click)="reservationTarget = null">Cancel</button>
+                    <button class="btn btn-primary btn-block" [disabled]="!selectedSlotId || bookingLoading"
+                        (click)="bookTable()">
+                        {{ bookingLoading ? 'Securing...' : 'Confirm Reservation' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Confirmation Popup -->
+    <div *ngIf="showSuccessPopup" class="modal-overlay">
+    </div>
+</div>

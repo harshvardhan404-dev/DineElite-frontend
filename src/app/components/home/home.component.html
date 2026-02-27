@@ -1,0 +1,122 @@
+<div class="home-container">
+    <!-- ADMIN VIEW -->
+    <ng-container *ngIf="getRole() === 'ADMIN'">
+        <section class="hero glass">
+            <div class="hero-content">
+                <span class="badge badge-primary">Partner Portal</span>
+                <h1 class="gradient-text">Master Your Restaurant's <br>Digital Experience</h1>
+                <p class="hero-subtitle">Elevate your brand, manage reservations, and track growth with DineElite's
+                    partner tools.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" routerLink="/dashboard">
+                        Open Dashboard <span>↗</span>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1551218808-94e220e0316d?auto=format&fit=crop&q=80&w=1000"
+                    alt="Restaurant Management">
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card glass">
+                <div class="feature-icon">📊</div>
+                <h3>Advanced Analytics</h3>
+                <p>Track peak hours, utilization, and revenue trends in real-time to optimize operations.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="feature-icon">📢</div>
+                <h3>Promotion Engine</h3>
+                <p>Reach thousands of diners instantly by publishing ads and stories directly from your dashboard.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="feature-icon">🍽️</div>
+                <h3>Menu Control</h3>
+                <p>Update your offerings, prices, and availability on the fly to keep your profile fresh.</p>
+            </div>
+        </section>
+    </ng-container>
+
+    <!-- CUSTOMER/GUEST VIEW -->
+    <ng-container *ngIf="getRole() !== 'ADMIN'">
+        <section class="hero glass">
+            <div class="hero-content">
+                <h1 class="gradient-text">Exquisite Dining, <br>Effortless Reservations</h1>
+                <p class="hero-subtitle">Discover the city's most coveted tables and book your next culinary adventure
+                    in seconds.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" routerLink="/booking">
+                        View Restaurants <span>→</span>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=1000"
+                    alt="Fine Dining">
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card glass">
+                <div class="feature-icon">✨</div>
+                <h3>Premium Selection</h3>
+                <p>Hand-picked restaurants that offer more than just a meal—they offer an experience.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="feature-icon">📅</div>
+                <h3>Instant Booking</h3>
+                <p>Real-time availability tracking. No more waiting for confirmation calls.</p>
+            </div>
+            <div class="feature-card glass">
+                <div class="feature-icon">🛡️</div>
+                <h3>Secure Deposits</h3>
+                <p>Worry-free reservations with integrated deposit handling to secure your spot.</p>
+            </div>
+        </section>
+
+        <section class="elite-moments glass fa-fade-in">
+            <div class="moments-content">
+                <div class="moments-text">
+                    <h2 class="gradient-text">Elite Moments</h2>
+                    <p>Experience the finest dining highlights from our partners.</p>
+                </div>
+                <button class="btn btn-primary" routerLink="/feed">
+                    View Elite Moments <span>→</span>
+                </button>
+            </div>
+        </section>
+    </ng-container>
+
+    <!-- Shared Sections -->
+    <section class="about-section glass">
+        <div class="about-text">
+            <h2 class="gradient-text">The DineElite Excellence</h2>
+            <p>At DineElite, we bridge the gap between world-class culinary establishments and discerning diners. Our
+                platform is designed to provide seamless experiences for both partners and guests.</p>
+            <ul class="benefit-list">
+                <li><span>✓</span> Ultra-premium user interface</li>
+                <li><span>✓</span> Real-time synchronization</li>
+                <li><span>✓</span> Expertly curated content</li>
+            </ul>
+        </div>
+        <div class="about-stats">
+            <div class="stat-item">
+                <span class="stat-value">10+</span>
+                <span class="stat-label">Premium Partners</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">50k+</span>
+                <span class="stat-label">Happy Diners</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">24/7</span>
+                <span class="stat-label">Support</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="home-footer">
+        <p>&copy; 2026 DineElite Technologies. All rights reserved.</p>
+    </footer>
+</div>
