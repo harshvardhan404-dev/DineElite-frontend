@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'YOUR_PRODUCTION_API_URL_HERE'
+    apiUrl: 'https://dineelite-backend-production.up.railway.app'
 };
