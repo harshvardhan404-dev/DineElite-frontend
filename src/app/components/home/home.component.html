@@ -57,6 +57,36 @@
             </div>
         </section>
 
+        <!-- AI Taste Matchmaker Section -->
+        <section class="ai-recommendations glass fa-fade-in" *ngIf="dishes.length > 0">
+            <div class="section-header">
+                <span class="badge badge-accent">AI Powered</span>
+                <h2 class="gradient-text">Your AI Taste Matches</h2>
+                <p>Personalized recommendations based on your dietary preferences.</p>
+            </div>
+
+            <div class="dish-grid">
+                <div class="dish-card glass shadow-hover" *ngFor="let dish of dishes">
+                    <div class="dish-image">
+                        <img [src]="dish.imageUrl" [alt]="dish.itemName">
+                        <div class="match-score">
+                            <span class="score-value">{{dish.matchPercentage}}%</span>
+                            <span class="score-label">Match</span>
+                        </div>
+                    </div>
+                    <div class="dish-info">
+                        <h3>{{dish.itemName}}</h3>
+                        <p class="restaurant-name">📍 {{dish.restaurantName}}</p>
+                        <p class="dish-description">{{dish.description}}</p>
+                        <div class="dish-footer">
+                            <span class="price">₹{{dish.price}}</span>
+                            <button class="btn btn-sm btn-primary" routerLink="/booking">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="features-grid">
             <div class="feature-card glass">
                 <div class="feature-icon">✨</div>

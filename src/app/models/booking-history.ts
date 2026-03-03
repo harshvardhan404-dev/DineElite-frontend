@@ -10,4 +10,5 @@ export interface BookingHistory {
     depositAmount: number;
     paymentStatus: string;
     dietaryNotes?: string;
+    preOrderedItems?: any[];
 }

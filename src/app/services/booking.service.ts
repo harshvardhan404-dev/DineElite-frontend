@@ -45,18 +45,17 @@ export class BookingService {
         return this.http.get<any[]>(`${environment.apiUrl}/api/table-layout/${restaurantId}/availability`, { params });
     }
 
-    createBooking(restaurantId: number, date: string, slotId: number, guestCount: number, tableId?: number): Observable<any> {
-        let params = new HttpParams()
-            .set('restaurantId', restaurantId)
-            .set('date', date)
-            .set('slotId', slotId)
-            .set('guestCount', guestCount);
+    createBooking(restaurantId: number, date: string, slotId: number, guestCount: number, tableId?: number, preOrders: any[] = []): Observable<any> {
+        const body = {
+            restaurantId,
+            date,
+            slotId,
+            guestCount,
+            tableId,
+            preOrders
+        };
 
-        if (tableId) {
-            params = params.set('tableId', tableId);
-        }
-
-        return this.http.get<any>(`${environment.apiUrl}/api/booking/create`, { params });
+        return this.http.post<any>(`${environment.apiUrl}/api/booking/create`, body);
     }
 
     getBookingHistory(): Observable<BookingHistory[]> {

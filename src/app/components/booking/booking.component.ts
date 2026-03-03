@@ -40,6 +40,9 @@ export class BookingComponent implements OnInit {
     fetchingTables = false;
 
     reservationTarget: any = null;
+    restaurantMenu: any[] = [];
+    selectedPreOrders: any[] = [];
+    menuLoading = false;
 
     constructor(
         private bookingService: BookingService,
@@ -159,7 +162,44 @@ export class BookingComponent implements OnInit {
         this.floorTables = [];
         this.guestCount = 2;
         this.selectedDate = new Date().toISOString().split('T')[0];
+        this.selectedPreOrders = [];
+        this.fetchRestaurantMenu(restaurant.id);
         this.onParamsChange();
+    }
+
+    fetchRestaurantMenu(restaurantId: number) {
+        this.menuLoading = true;
+        this.bookingService.getPopularMenu(restaurantId).subscribe({
+            next: (menu) => {
+                this.restaurantMenu = menu;
+                this.menuLoading = false;
+            },
+            error: () => {
+                this.menuLoading = false;
+            }
+        });
+    }
+
+    togglePreOrder(item: any) {
+        const index = this.selectedPreOrders.findIndex(p => p.menuId === item.menuId);
+        if (index > -1) {
+            this.selectedPreOrders.splice(index, 1);
+        } else {
+            this.selectedPreOrders.push({
+                menuId: item.menuId,
+                itemName: item.itemName,
+                price: item.price,
+                quantity: 1
+            });
+        }
+    }
+
+    isPreOrdered(menuId: number): boolean {
+        return this.selectedPreOrders.some(p => p.menuId === menuId);
+    }
+
+    getPreOrderTotal(): number {
+        return this.selectedPreOrders.reduce((sum, p) => sum + (p.price * p.quantity), 0);
     }
 
     onParamsChange() {
@@ -232,12 +272,18 @@ export class BookingComponent implements OnInit {
     bookTable() {
         if (this.selectedRestaurantId && this.selectedDate && this.selectedSlotId) {
             this.bookingLoading = true;
+            const preOrders = this.selectedPreOrders.map(p => ({
+                menuId: p.menuId,
+                quantity: p.quantity
+            }));
+
             this.bookingService.createBooking(
                 this.selectedRestaurantId,
                 this.selectedDate,
                 this.selectedSlotId,
                 this.guestCount,
-                this.selectedTableId || undefined
+                this.selectedTableId || undefined,
+                preOrders
             ).subscribe({
                 next: (res) => {
                     this.bookingLoading = false;

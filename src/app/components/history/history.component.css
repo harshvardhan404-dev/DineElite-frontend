@@ -152,6 +152,60 @@
     color: #fff;
 }
 
+/* ---- Pre-Ordered Items Section ---- */
+.pre-ordered-items-box {
+    margin: 0.5rem 0 1rem;
+    padding: 1rem;
+    background: rgba(var(--primary-rgb), 0.05);
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+    border-radius: var(--radius-md);
+}
+
+.items-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.item-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 5px var(--primary-glow);
+}
+
+.item-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.item-qty {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.item-price {
+    font-weight: 700;
+    color: var(--text-bright);
+}
+
 /* ---- sm: 480px+ ---- */
 @media (min-width: 480px) {
     .card-actions {

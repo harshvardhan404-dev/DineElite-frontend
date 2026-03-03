@@ -227,11 +227,38 @@
                     </div>
                 </div>
 
+                <!-- Pre-Order Section -->
+                <div class="pre-order-section" *ngIf="restaurantMenu.length > 0">
+                    <h4 class="section-subtitle">Pre-Order Signature Dishes (Optional)</h4>
+                    <p class="helper-text">Have your favorites ready when you arrive.</p>
+
+                    <div class="menu-scroll">
+                        <div class="menu-item-card glass-compact" *ngFor="let item of restaurantMenu"
+                            [class.selected]="isPreOrdered(item.menuId)" (click)="togglePreOrder(item)">
+                            <div class="menu-item-info">
+                                <span class="item-name">{{item.itemName}}</span>
+                                <span class="item-price">₹{{item.price}}</span>
+                            </div>
+                            <button class="btn-add">
+                                {{ isPreOrdered(item.menuId) ? '✓' : '+' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Deposit Summary -->
                 <div class="deposit-summary-box">
                     <div class="deposit-row">
                         <span>Reservation Deposit</span>
                         <span class="amount">₹{{ reservationTarget.depositAmount }}</span>
+                    </div>
+                    <div class="deposit-row" *ngIf="selectedPreOrders.length > 0">
+                        <span>Pre-Order Items ({{selectedPreOrders.length}})</span>
+                        <span class="amount">₹{{ getPreOrderTotal() }}</span>
+                    </div>
+                    <div class="deposit-row total-row" *ngIf="selectedPreOrders.length > 0">
+                        <span>Total Payable</span>
+                        <span class="amount">₹{{ reservationTarget.depositAmount + getPreOrderTotal() }}</span>
                     </div>
                     <p class="deposit-note">Fully redeemable against your final bill.</p>
                 </div>
