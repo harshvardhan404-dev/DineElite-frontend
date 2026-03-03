@@ -240,7 +240,8 @@
                                 <span class="item-price">₹{{item.price}}</span>
                             </div>
                             <button class="btn-add">
-                                {{ isPreOrdered(item.menuId) ? '✓' : '+' }}
+                                <span class="icon">{{ isPreOrdered(item.menuId) ? '✓' : '+' }}</span>
+                                <span class="text">{{ isPreOrdered(item.menuId) ? 'Included' : 'Add to Order' }}</span>
                             </button>
                         </div>
                     </div>
