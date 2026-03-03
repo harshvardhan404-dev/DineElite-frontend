@@ -24,8 +24,10 @@ export class LoginComponent {
         this.loading = true;
         this.error = '';
 
+        console.log('>>> Attempting login for:', this.email);
         this.authService.login(this.email, this.password).subscribe({
-            next: () => {
+            next: (response) => {
+                console.log('>>> Login Success Response:', response);
                 const role = this.authService.getRole();
                 if (role === 'ADMIN') {
                     this.router.navigate(['/dashboard']);
@@ -33,7 +35,8 @@ export class LoginComponent {
                     this.router.navigate(['/home']);
                 }
             },
-            error: () => {
+            error: (err) => {
+                console.error('>>> Login Error:', err);
                 this.error = 'Invalid email or password';
                 this.loading = false;
             }
