@@ -1,34 +1,41 @@
+/* ===========================
+   Restaurant Details — Mobile-First
+   =========================== */
+
+/* ---- Hero ---- */
 .details-hero {
-    height: 450px;
+    height: auto;
+    min-height: 280px;
     background-size: cover;
     background-position: center;
     position: relative;
-    padding: 3rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     overflow: hidden;
-    border-radius: 32px !important;
+    border-radius: var(--radius-lg) !important;
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 100%;
 }
 
 .huge-title {
-    font-size: 3.5rem;
-    margin: 1rem 0;
+    font-size: 1.8rem;
+    margin: 0.75rem 0;
 }
 
 .description-large {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-muted);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
 
 .breadcrumb {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -41,50 +48,57 @@
 
 .meta-row {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
 }
 
 .glass-compact {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-    padding: 0.5rem 1rem;
-    border-radius: 12px;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
+    gap: 6px;
+    font-size: 0.8rem;
 }
 
 .hero-actions {
-    position: absolute;
-    bottom: 3rem;
-    right: 3rem;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    gap: 0.75rem;
 }
 
-/* Page Grid & Layout */
+/* ---- Page Grid ---- */
 .details-grid {
     display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 3rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 0.25rem;
 }
 
 .section-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .menu-explorer {
     flex: 1;
 }
 
+/* ---- Menu Grid ---- */
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
 }
 
 .menu-card-ultra {
@@ -93,10 +107,11 @@
     padding: 0;
     overflow: hidden;
     height: 100%;
+    border-radius: var(--radius-lg);
 }
 
 .item-visual {
-    height: 140px;
+    height: 120px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     position: relative;
     border-bottom: 1px solid var(--glass-border);
@@ -104,8 +119,8 @@
 
 .tag {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 0.75rem;
+    left: 0.75rem;
     background: var(--primary);
     color: #000;
     font-size: 0.6rem;
@@ -116,7 +131,7 @@
 }
 
 .item-details {
-    padding: 1.5rem;
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -124,9 +139,9 @@
 }
 
 .item-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .item-footer {
@@ -139,24 +154,27 @@
 .price {
     font-weight: 800;
     color: var(--primary);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
-/* Buttons */
+/* ---- Buttons ---- */
 .btn-lg {
-    padding: 1.25rem 2.5rem;
-    font-size: 1.1rem;
+    padding: 1rem 1.75rem;
+    font-size: 1rem;
     background: linear-gradient(135deg, var(--primary) 0%, #ffcc33 50%, #d4af37 100%);
     background-size: 200% auto;
     color: #000;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     font-weight: 900;
-    box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.5);
-    animation: liquidGold 4s ease infinite, heroPulse 3s infinite;
+    box-shadow: 0 12px 30px -10px rgba(245, 158, 11, 0.5);
+    animation: liquidGold 4s ease infinite;
     border: none;
     position: relative;
     overflow: hidden;
+    min-height: 48px;
+    width: 100%;
+    justify-content: center;
 }
 
 @keyframes liquidGold {
@@ -175,48 +193,47 @@
 
 @keyframes heroPulse {
     0% {
-        box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.5);
+        box-shadow: 0 12px 30px -10px rgba(245, 158, 11, 0.5);
     }
 
     50% {
-        box-shadow: 0 15px 60px 0px rgba(245, 158, 11, 0.7);
+        box-shadow: 0 12px 50px 0 rgba(245, 158, 11, 0.7);
     }
 
     100% {
-        box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.5);
+        box-shadow: 0 12px 30px -10px rgba(245, 158, 11, 0.5);
     }
 }
 
 .btn-lg:hover {
-    transform: translateY(-5px) scale(1.03);
+    transform: translateY(-4px) scale(1.02);
     filter: brightness(1.2);
 }
 
 .btn-sm {
-    padding: 0.5rem 1.25rem;
+    padding: 0.5rem 1rem;
     font-size: 0.75rem;
     background: rgba(255, 255, 255, 0.03) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     transition: var(--transition-smooth);
     color: var(--text-main);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    min-height: 44px;
 }
 
 .btn-sm:hover {
-    background: rgba(var(--primary-h), var(--primary-s), var(--primary-l), 0.1) !important;
+    background: rgba(var(--primary-rgb), 0.1) !important;
     border-color: var(--primary) !important;
     color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px -5px var(--primary-glow);
 }
 
 .btn-fav {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     padding: 0 !important;
     border-radius: 50% !important;
     display: flex;
@@ -226,15 +243,14 @@
     background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     transition: var(--transition-smooth);
+    flex-shrink: 0;
 }
 
 .btn-fav:hover {
     background: rgba(239, 68, 68, 0.1) !important;
     border-color: #ef4444 !important;
     transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
 .btn-fav .heart-icon {
@@ -247,7 +263,45 @@
     transform: scale(1.2);
 }
 
-/* Sidebar Button Specifics */
+/* ---- Sidebar ---- */
+.fancy-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25rem;
+}
+
+.fancy-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.875rem;
+    font-size: 0.9rem;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent) !important;
+    border: 1px dashed var(--primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+}
+
+.highlight-box h3 {
+    margin-bottom: 0.75rem;
+}
+
+.highlight-box p {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
 .highlight-box .btn-full {
     background: linear-gradient(135deg, #f59e0b, #d97706);
     color: #000;
@@ -258,8 +312,9 @@
     box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.4);
     position: relative;
     overflow: hidden;
-    padding: 1rem;
+    padding: 0.875rem;
     border-radius: 14px;
+    min-height: 48px;
 }
 
 .highlight-box .btn-full::before {
@@ -294,45 +349,9 @@
     filter: brightness(1.1);
 }
 
-/* Sidebar */
-.fancy-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 1.5rem;
-}
-
-.fancy-list li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-
-.dot {
-    width: 6px;
-    height: 6px;
-    background: var(--primary);
-    border-radius: 50%;
-}
-
-.highlight-box {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent) !important;
-    border: 1px dashed var(--primary);
-}
-
-.highlight-box h3 {
-    margin-bottom: 1rem;
-}
-
-.highlight-box p {
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-}
-
-/* Loading State */
+/* ---- Loading ---- */
 .loading-box {
-    padding: 5rem;
+    padding: 3rem 1.5rem;
     text-align: center;
 }
 
@@ -352,10 +371,14 @@
     }
 }
 
+.animate-in {
+    animation: animateIn 0.6s ease-out forwards;
+}
+
 @keyframes animateIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(16px);
     }
 
     to {
@@ -364,114 +387,46 @@
     }
 }
 
-.animate-in {
-    animation: animateIn 0.6s ease-out forwards;
-}
-
-@media (max-width: 1000px) {
-    .details-hero {
-        height: auto;
-        min-height: 350px;
-        padding: 2rem 1.5rem;
-    }
-
-    .hero-content {
-        order: 2;
-    }
-
-    .hero-actions {
-        order: 1;
-        position: relative;
-        bottom: 0;
-        right: 0;
-        margin-bottom: 2rem;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .huge-title {
-        font-size: 2.2rem;
-    }
-
-    .details-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .huge-title {
-        font-size: 1.8rem;
-    }
-
-    .meta-row {
-        gap: 0.75rem;
-    }
-
-    .glass-compact {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.75rem;
-    }
-
-    .menu-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Reviews Section */
+/* ===========================
+   Reviews Section
+   =========================== */
 .reviews-section {
-    padding: 3rem;
-    margin-top: 4rem;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-radius: var(--radius-lg);
 }
 
 .reviews-grid {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
-    margin-top: 3rem;
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
-@media (min-width: 1100px) {
-    .reviews-grid {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-
-    .review-compose {
-        width: 400px;
-        position: sticky;
-        top: 2rem;
-    }
-
-    .reviews-list {
-        flex: 1;
-    }
-}
-
-/* Review Compose */
+/* ---- Review Compose ---- */
 .review-compose {
-    padding: 2.5rem;
+    padding: 1.5rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
+    border-radius: var(--radius-lg);
 }
 
 .review-compose h3 {
-    margin-bottom: 2rem;
-    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .glass-input {
     width: 100%;
     background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 12px !important;
-    padding: 1rem !important;
+    border-radius: var(--radius-md) !important;
+    padding: 0.875rem !important;
     color: #fff !important;
     font-size: 0.95rem !important;
     outline: none !important;
     transition: var(--transition-smooth) !important;
+    min-height: 44px;
 }
 
 .glass-input:focus {
@@ -483,17 +438,19 @@
 .rating-input {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem 1rem;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 0.75rem;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
 }
 
 .stars {
-    color: rgba(255, 255, 255, 0.2);
     font-size: 1.5rem;
+    display: flex;
+    gap: 6px;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.2);
 }
 
 .stars span.active {
@@ -501,11 +458,12 @@
 }
 
 .photo-upload-section {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
 }
 
 .photo-input-group {
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
     margin-top: 0.5rem;
 }
@@ -527,7 +485,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
 }
 
 .remove-btn {
@@ -538,52 +496,52 @@
     color: white;
     border: none;
     border-radius: 50%;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     font-size: 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 20px;
 }
 
-/* Review List */
+/* ---- Reviews List ---- */
 .reviews-list {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .review-card {
-    padding: 2rem;
+    padding: 1.5rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     transition: var(--transition-smooth);
 }
 
 .review-card:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.1);
-    transform: translateX(10px);
 }
 
 .review-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1rem;
 }
 
 .user-avatar {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, var(--primary), #d4af37);
     color: #000;
     border-radius: 50%;
@@ -591,13 +549,14 @@
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 1.2rem;
-    box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+    flex-shrink: 0;
 }
 
 .user-name {
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: block;
     color: #fff;
 }
@@ -608,7 +567,7 @@
 }
 
 .review-rating {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     letter-spacing: 2px;
     color: rgba(255, 255, 255, 0.1);
 }
@@ -619,25 +578,25 @@
 }
 
 .review-content {
-    line-height: 1.8;
+    line-height: 1.7;
     color: rgba(255, 255, 255, 0.9);
-    font-size: 1.05rem;
-    padding-left: 10px;
+    font-size: 0.95rem;
+    padding-left: 8px;
     border-left: 2px solid rgba(var(--primary-rgb), 0.2);
 }
 
 .review-photos {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-top: 1rem;
 }
 
 .review-photo {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: var(--transition-smooth);
     cursor: zoom-in;
@@ -646,23 +605,15 @@
 .review-photo:hover {
     transform: scale(1.05);
     border-color: var(--primary);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 .no-reviews {
     text-align: center;
-    padding: 5rem 3rem;
+    padding: 3rem 1.5rem;
     color: var(--text-muted);
     background: rgba(255, 255, 255, 0.02);
     border: 1px dashed rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-}
-
-.stars {
-    font-size: 1.8rem;
-    display: flex;
-    gap: 8px;
-    cursor: pointer;
+    border-radius: var(--radius-lg);
 }
 
 .mt-4 {
@@ -671,4 +622,172 @@
 
 .mt-3 {
     margin-top: 1rem;
+}
+
+/* ---- md: 768px+ ---- */
+@media (min-width: 768px) {
+    .details-hero {
+        min-height: 350px;
+        padding: 2.5rem;
+    }
+
+    .huge-title {
+        font-size: 2.5rem;
+    }
+
+    .description-large {
+        font-size: 1.1rem;
+    }
+
+    .meta-row {
+        gap: 1.25rem;
+    }
+
+    .glass-compact {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .item-visual {
+        height: 140px;
+    }
+
+    .item-details {
+        padding: 1.5rem;
+    }
+
+    .item-name {
+        font-size: 1.1rem;
+    }
+
+    .price {
+        font-size: 1.25rem;
+    }
+
+    .reviews-section {
+        padding: 2.5rem;
+        margin-top: 3rem;
+    }
+
+    .reviews-grid {
+        gap: 3rem;
+        margin-top: 2.5rem;
+    }
+
+    .review-compose {
+        padding: 2rem;
+    }
+
+    .review-compose h3 {
+        font-size: 1.5rem;
+    }
+
+    .review-card {
+        padding: 2rem;
+    }
+
+    .review-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .user-avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+
+    .review-photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .section-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .hero-actions {
+        margin-bottom: 2rem;
+    }
+
+    .btn-lg {
+        width: auto;
+        padding: 1.25rem 2.5rem;
+        font-size: 1.1rem;
+        animation: liquidGold 4s ease infinite, heroPulse 3s infinite;
+    }
+
+    .loading-box {
+        padding: 5rem;
+    }
+
+    .photo-input-group {
+        flex-direction: row;
+    }
+}
+
+/* ---- lg: 1024px+ ---- */
+@media (min-width: 1024px) {
+    .details-hero {
+        height: 450px;
+        padding: 3rem;
+        border-radius: 32px !important;
+        margin-bottom: 3rem;
+    }
+
+    .hero-content {
+        max-width: 800px;
+    }
+
+    .huge-title {
+        font-size: 3.5rem;
+        margin: 1rem 0;
+    }
+
+    .hero-actions {
+        position: absolute;
+        bottom: 3rem;
+        right: 3rem;
+        width: auto;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr 350px;
+        gap: 3rem;
+    }
+
+    .reviews-section {
+        padding: 3rem;
+        margin-top: 4rem;
+    }
+}
+
+@media (min-width: 1100px) {
+    .reviews-grid {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .review-compose {
+        width: 400px;
+        position: sticky;
+        top: 2rem;
+        padding: 2.5rem;
+    }
+
+    .reviews-list {
+        flex: 1;
+    }
+
+    .review-card:hover {
+        transform: translateX(10px);
+    }
 }

@@ -38,6 +38,8 @@
         <a href="javascript:void(0)" (click)="logout()" class="nav-item-link btn-logout">Logout</a>
       </li>
     </ul>
+
+    <div class="nav-backdrop" *ngIf="isMobileMenuOpen" (click)="toggleMobileMenu()"></div>
   </div>
 </nav>
 

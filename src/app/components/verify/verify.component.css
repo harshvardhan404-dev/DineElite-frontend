@@ -1,0 +1,104 @@
+/* ===========================
+   Verify — Mobile-First
+   =========================== */
+
+.verify-container {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 1.5rem 1rem;
+}
+
+.verify-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.25rem;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.verify-card h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+    background: linear-gradient(135deg, var(--primary), #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.status {
+    margin-top: 1.25rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+.status h3 {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+}
+
+.status p {
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+}
+
+.success {
+    color: #4ade80;
+}
+
+.error {
+    color: #f87171;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding: 0.875rem 1.5rem;
+    min-height: 48px;
+    background: linear-gradient(135deg, var(--primary), #f97316);
+    color: #000;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 1rem;
+    transition: var(--transition-smooth);
+    width: 100%;
+    box-shadow: 0 8px 20px -5px rgba(245, 158, 11, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -5px rgba(245, 158, 11, 0.5);
+    filter: brightness(1.1);
+}
+
+/* ---- sm: 480px+ ---- */
+@media (min-width: 480px) {
+    .verify-card {
+        padding: 2.5rem 2rem;
+        border-radius: var(--radius-xl);
+    }
+
+    .verify-card h2 {
+        font-size: 1.8rem;
+    }
+
+    .status {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        width: auto;
+        padding: 0.875rem 2rem;
+    }
+}

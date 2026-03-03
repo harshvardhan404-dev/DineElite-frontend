@@ -1,5 +1,9 @@
+/* ===========================
+   History — Mobile-First
+   =========================== */
+
 .stats-box {
-    padding: 1rem 2.5rem;
+    padding: 0.75rem 1.25rem;
     text-align: center;
 }
 
@@ -12,7 +16,7 @@
 }
 
 .stats-box .value {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 900;
     color: var(--primary);
 }
@@ -20,21 +24,23 @@
 .history-list-ultra {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
+/* ---- Booking Card (stacked on mobile) ---- */
 .booking-card-ultra {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 1fr;
     padding: 0;
     overflow: hidden;
-    min-height: 220px;
+    border-radius: var(--radius-lg);
 }
 
 .card-visual {
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.15));
     position: relative;
-    border-right: 1px solid var(--glass-border);
+    height: 70px;
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .status-overlay {
@@ -46,30 +52,32 @@
 }
 
 .card-content {
-    padding: 2.5rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1rem;
 }
 
 .card-header h3 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 .address-small {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
     margin-top: 4px;
 }
 
+/* ---- Detail Grid (single column on mobile) ---- */
 .detail-grid-compact {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin: 2rem 0;
-    padding: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.02);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
 }
 
 .detail-box-ultra {
@@ -79,26 +87,32 @@
 }
 
 .tag-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--text-muted);
     text-transform: uppercase;
     font-weight: 800;
 }
 
 .tag-val {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
 }
 
 .card-actions {
     display: flex;
-    align-items: center;
-    gap: 2rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
 }
 
 .btn-danger-soft {
     border-color: rgba(239, 68, 68, 0.3);
     color: #ef4444;
+    min-height: 44px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-danger-soft:hover {
@@ -109,6 +123,7 @@
 .policy-note {
     font-size: 0.75rem;
     color: var(--text-muted);
+    text-align: center;
 }
 
 .cancelled {
@@ -137,24 +152,60 @@
     color: #fff;
 }
 
-@media (max-width: 900px) {
+/* ---- sm: 480px+ ---- */
+@media (min-width: 480px) {
+    .card-actions {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stats-box {
+        padding: 1rem 2rem;
+    }
+
+    .stats-box .value {
+        font-size: 1.5rem;
+    }
+}
+
+/* ---- md: 768px+ ---- */
+@media (min-width: 768px) {
     .booking-card-ultra {
-        grid-template-columns: 1fr;
+        grid-template-columns: 200px 1fr;
+        min-height: 220px;
     }
 
     .card-visual {
-        height: 80px;
-        border-right: none;
-        border-bottom: 1px solid var(--glass-border);
+        height: auto;
+        border-bottom: none;
+        border-right: 1px solid var(--glass-border);
+    }
+
+    .card-content {
+        padding: 2rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.5rem;
     }
 
     .detail-grid-compact {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        padding: 1.5rem;
     }
 
-    .card-actions {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+    .tag-val {
+        font-size: 1rem;
+    }
+
+    .history-list-ultra {
+        gap: 2rem;
+    }
+
+    .stats-box {
+        padding: 1rem 2.5rem;
     }
 }

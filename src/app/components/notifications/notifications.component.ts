@@ -38,65 +38,7 @@ import { Notification } from '../../models/notification';
             </ng-template>
         </div>
     `,
-    styles: [`
-        .notifications-container {
-            padding: 30px;
-            border-radius: 24px;
-            max-width: 800px;
-            margin: 40px auto;
-        }
-        .notifications-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 15px;
-        }
-        .unread-badge {
-            background: var(--primary);
-            color: black;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 800;
-        }
-        .notification-item {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.02);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-        .notification-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(5px);
-        }
-        .notification-item.unread {
-            background: rgba(var(--primary-rgb), 0.05);
-            border-color: rgba(var(--primary-rgb), 0.2);
-        }
-        .notification-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-        }
-        .notification-icon.booking { background: rgba(255, 184, 0, 0.1); border: 1px solid rgba(255, 184, 0, 0.3); }
-        .notification-icon.like { background: rgba(255, 48, 64, 0.1); border: 1px solid rgba(255, 48, 64, 0.3); }
-        .notification-icon.comment { background: rgba(0, 149, 246, 0.1); border: 1px solid rgba(0, 149, 246, 0.3); }
-        .message { margin-bottom: 5px; color: white; line-height: 1.5; font-size: 0.95rem; }
-        .time { font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; }
-        .empty-state { text-align: center; padding: 60px 0; }
-        .sparkle { font-size: 3rem; margin-bottom: 15px; }
-    `]
+    styleUrl: './notifications.component.css'
 })
 export class NotificationsComponent implements OnInit {
     notifications: Notification[] = [];

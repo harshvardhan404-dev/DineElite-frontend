@@ -1,9 +1,13 @@
+/* ===========================
+   Login — Mobile-First
+   =========================== */
+
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 2rem;
+    padding: 1rem;
     position: relative;
     overflow: hidden;
 }
@@ -12,8 +16,8 @@
     background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    padding: 3.5rem;
-    border-radius: 32px;
+    padding: 2rem 1.25rem;
+    border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     width: 100%;
@@ -37,7 +41,7 @@
 
 h2 {
     margin-top: 0;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-family: 'Outfit', sans-serif;
     font-weight: 800;
     background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
@@ -50,13 +54,13 @@ h2 {
 
 p {
     color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
 .form-group {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 label {
@@ -71,15 +75,16 @@ label {
 
 input {
     width: 100%;
-    padding: 1rem 1.25rem;
+    padding: 0.875rem 1rem;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     color: #fff;
     font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: var(--transition-smooth);
     box-sizing: border-box;
     box-shadow: inset 0 2px 4px 0 rgba(255, 255, 255, 0.05);
+    min-height: 48px;
 }
 
 input:focus {
@@ -91,23 +96,24 @@ input:focus {
 
 .btn-login {
     width: 100%;
-    padding: 1.1rem;
+    padding: 0.875rem;
+    min-height: 48px;
     background: linear-gradient(135deg, var(--primary), #f97316);
     color: #000;
     border: none;
-    border-radius: 16px;
-    font-size: 1.05rem;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
     font-weight: 700;
     font-family: 'Outfit', sans-serif;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: var(--transition-smooth);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
 }
 
 .btn-login:hover:not(:disabled) {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: 0 15px 30px -5px rgba(245, 158, 11, 0.5);
     filter: brightness(1.1);
 }
@@ -122,40 +128,20 @@ input:focus {
     color: #ef4444;
     font-size: 0.9rem;
     font-weight: 600;
-    margin-top: -1.5rem;
-    margin-bottom: 1.5rem;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
     text-align: center;
 }
 
 .demo-creds {
-    margin-top: 2.5rem;
-    padding: 1.5rem;
+    margin-top: 2rem;
+    padding: 1.25rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
+    border-radius: var(--radius-md);
     font-size: 0.85rem;
     color: var(--text-muted);
     line-height: 1.6;
-}
-
-@media (max-width: 480px) {
-    .login-container {
-        padding: 1.5rem 1rem;
-    }
-
-    .login-card {
-        padding: 2.5rem 1.5rem;
-        border-radius: 20px;
-    }
-
-    h2 {
-        font-size: 1.8rem;
-    }
-
-    p {
-        font-size: 1rem;
-        margin-bottom: 2rem;
-    }
 }
 
 .demo-creds strong {
@@ -165,4 +151,60 @@ input:focus {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+/* ---- Register Link ---- */
+.register-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.register-link-action {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.register-link-action:hover {
+    text-decoration: underline;
+}
+
+/* ---- Tablet+ ---- */
+@media (min-width: 480px) {
+    .login-card {
+        padding: 3rem 2.5rem;
+        border-radius: 32px;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+    }
+
+    p {
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    input {
+        padding: 1rem 1.25rem;
+        border-radius: 16px;
+    }
+
+    .btn-login {
+        padding: 1.1rem;
+        border-radius: 16px;
+        font-size: 1.05rem;
+    }
+
+    .demo-creds {
+        margin-top: 2.5rem;
+        padding: 1.5rem;
+        border-radius: 20px;
+    }
 }

@@ -26,40 +26,7 @@ import { environment } from '../../../environments/environment';
             </div>
         </div>
     `,
-    styles: [`
-        .verify-container {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            padding: 20px;
-        }
-        .verify-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-        }
-        .status { margin-top: 20px; font-size: 18px; }
-        .success { color: #4ade80; }
-        .error { color: #f87171; }
-        .btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 12px 24px;
-            background: #3b82f6;
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-    `]
+    styleUrl: './verify.component.css'
 })
 export class VerifyComponent implements OnInit {
     loading = true;

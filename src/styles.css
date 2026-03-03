@@ -1,119 +1,210 @@
+/* ===========================
+   DineElite — Mobile-First Global Styles
+   Base: 320–479px | sm: 480px | md: 768px | lg: 1024px
+   =========================== */
+
 :root {
+  /* Brand Colors */
   --primary: #d4af37;
-  /* Gold */
   --primary-rgb: 212, 175, 55;
+  --primary-h: 45;
+  --primary-s: 65%;
+  --primary-l: 52%;
+  --primary-glow: rgba(212, 175, 55, 0.35);
+
+  /* Backgrounds */
   --bg: #0a0a0c;
   --card-bg: rgba(255, 255, 255, 0.05);
-  --text: #ffffff;
-  --text-light: rgba(255, 255, 255, 0.6);
-  --error: #ff4d4d;
   --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  /* Text */
+  --text: #ffffff;
+  --text-main: #ffffff;
+  --text-light: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Feedback */
+  --error: #ff4d4d;
   --border: rgba(255, 255, 255, 0.1);
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-* {
+/* ===========================
+   Reset & Base (Mobile-First)
+   =========================== */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
   background-color: var(--bg);
   background-image:
     radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
     radial-gradient(circle at 80% 80%, rgba(100, 100, 255, 0.05) 0%, transparent 40%);
   color: var(--text);
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
+/* Prevent iOS input zoom */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===========================
+   Touch-Friendly Targets
+   =========================== */
+button,
+[type="submit"],
+[type="button"],
+[type="reset"],
+.btn,
+.chip {
+  min-height: 44px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===========================
+   Layout Utilities
+   =========================== */
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 4rem;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--primary);
-  letter-spacing: -1px;
-  text-transform: uppercase;
-}
-
-.nav-links {
-  display: flex;
-  gap: 2.5rem;
-  align-items: center;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--text-light);
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--primary);
-}
-
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--primary);
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after,
-.nav-links a.active::after {
+.container {
   width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.btn-logout {
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid var(--primary);
-  padding: 0.6rem 1.5rem;
-  border-radius: 30px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--primary);
-  text-transform: uppercase;
-  transition: all 0.3s ease;
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
-.btn-logout:hover {
-  background: var(--primary);
-  color: #000;
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+    max-width: 1400px;
+  }
 }
 
 .content {
   flex: 1;
 }
 
+/* ===========================
+   Buttons — Global Base
+   =========================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: 'Outfit', sans-serif;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+  white-space: nowrap;
+  min-height: 44px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #f97316);
+  color: #000;
+  border: none;
+  box-shadow: 0 8px 20px -5px rgba(245, 158, 11, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -5px rgba(245, 158, 11, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ===========================
+   Typography Utilities
+   =========================== */
 .gradient-text {
   background: linear-gradient(135deg, var(--primary) 0%, #fff 100%);
   -webkit-background-clip: text;
@@ -121,20 +212,84 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.huge-title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 480px) {
+  .huge-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .huge-title {
+    font-size: 2.8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .huge-title {
+    font-size: 3.5rem;
+  }
+}
+
+/* ===========================
+   Glass Morphism
+   =========================== */
 .glass {
   background: var(--glass);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
+.glass-compact {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+}
+
+/* ===========================
+   Badge
+   =========================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-primary {
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+}
+
+/* ===========================
+   Animations
+   =========================== */
 .fade-in {
-  animation: fadeIn 0.8s ease-out;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-in {
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
 
   to {
@@ -143,20 +298,24 @@ body {
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ===========================
+   Scrollbar (Desktop)
+   =========================== */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
 
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 10px;
-}
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
 }
