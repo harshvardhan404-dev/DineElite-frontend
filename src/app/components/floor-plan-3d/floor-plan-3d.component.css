@@ -1,0 +1,159 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.floor-plan-3d-wrapper {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(13, 13, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Floor Selector Pills ── */
+.floor-selector {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.floor-selector::-webkit-scrollbar {
+    display: none;
+}
+
+.floor-pill {
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.floor-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.floor-pill.active {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    border-color: #a855f7;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* ── Canvas Container ── */
+.canvas-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+}
+
+.canvas-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    cursor: grab;
+}
+
+.canvas-container canvas:active {
+    cursor: grabbing;
+}
+
+/* ── Legend Overlay ── */
+.legend-overlay {
+    position: absolute;
+    bottom: 3.5rem;
+    left: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.legend-item.hint {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+    margin-top: 0.25rem;
+    padding-top: 0.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-dot.available {
+    background: #00e676;
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
+}
+
+.legend-dot.booked {
+    background: #ff5252;
+    box-shadow: 0 0 8px rgba(255, 82, 82, 0.5);
+}
+
+.legend-dot.selected {
+    background: #ffd740;
+    box-shadow: 0 0 8px rgba(255, 215, 64, 0.5);
+}
+
+/* ── Controls Hint ── */
+.controls-hint {
+    text-align: center;
+    padding: 0.6rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    letter-spacing: 0.5px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .canvas-container {
+        height: 350px;
+    }
+
+    .legend-overlay {
+        bottom: 3rem;
+        left: 0.5rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .floor-pill {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .canvas-container {
+        height: 600px;
+    }
+}

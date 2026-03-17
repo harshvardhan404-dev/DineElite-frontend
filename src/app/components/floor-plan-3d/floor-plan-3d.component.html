@@ -1,0 +1,40 @@
+<div class="floor-plan-3d-wrapper">
+    <!-- Floor Selector -->
+    <div class="floor-selector">
+        <button *ngFor="let floor of floors"
+                class="floor-pill"
+                [class.active]="floor === selectedFloor"
+                (click)="selectFloor(floor)">
+            {{ floor === 1 ? '🏠 Ground' : floor === 2 ? '🏢 Upper' : '🏗️ Floor ' + floor }}
+        </button>
+    </div>
+
+    <!-- 3D Canvas -->
+    <div class="canvas-container">
+        <canvas #canvas3d></canvas>
+    </div>
+
+    <!-- Legend Overlay -->
+    <div class="legend-overlay">
+        <div class="legend-item">
+            <span class="legend-dot available"></span> Available
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot booked"></span> Occupied
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot selected"></span> Selected
+        </div>
+        <div class="legend-item hint" *ngIf="mode === 'admin'">
+            🖱️ Drag tables to reposition
+        </div>
+        <div class="legend-item hint" *ngIf="mode === 'customer'">
+            👆 Click a table to select
+        </div>
+    </div>
+
+    <!-- Controls hint -->
+    <div class="controls-hint">
+        🔄 Drag to rotate &nbsp;|&nbsp; 🔍 Scroll to zoom
+    </div>
+</div>

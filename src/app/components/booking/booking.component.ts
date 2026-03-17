@@ -6,11 +6,12 @@ import { BookingService } from '../../services/booking.service';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
 import { RestaurantService } from '../../services/restaurant.service';
+import { FloorPlan3DComponent } from '../floor-plan-3d/floor-plan-3d.component';
 
 @Component({
     selector: 'app-booking',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, FloorPlan3DComponent],
     templateUrl: './booking.component.html',
     styleUrl: './booking.component.css'
 })
@@ -38,6 +39,8 @@ export class BookingComponent implements OnInit {
     floorTables: any[] = [];
     selectedTableId: number | null = null;
     fetchingTables = false;
+    floors: number[] = [1];
+    selectedFloor: number = 1;
 
     reservationTarget: any = null;
     restaurantMenu: any[] = [];
@@ -246,6 +249,19 @@ export class BookingComponent implements OnInit {
         if (!this.selectedRestaurantId || !this.selectedDate || !this.selectedSlotId) return;
 
         this.fetchingTables = true;
+
+        // Fetch floors
+        this.restaurantService.getFloors(this.selectedRestaurantId).subscribe({
+            next: (floors) => {
+                this.floors = floors.length > 0 ? floors : [1];
+                if (!this.floors.includes(this.selectedFloor)) {
+                    this.selectedFloor = this.floors[0];
+                }
+            },
+            error: () => { this.floors = [1]; }
+        });
+
+        // Fetch availability
         this.bookingService.getTableAvailability(
             this.selectedRestaurantId,
             this.selectedDate,
@@ -262,6 +278,16 @@ export class BookingComponent implements OnInit {
                 this.fetchingTables = false;
             }
         });
+    }
+
+    on3DTableSelected(tableData: any) {
+        if (tableData.isBooked || !tableData.hasCapacity) return;
+        this.selectedTableId = this.selectedTableId === tableData.tableId ? null : tableData.tableId;
+    }
+
+    onFloorChanged(floor: number) {
+        this.selectedFloor = floor;
+        this.selectedTableId = null;
     }
 
     selectFloorTable(table: any) {

@@ -10,11 +10,12 @@ import { AuthService } from '../../services/auth.service';
 import { MediaType } from '../../models/advertisement';
 import { DashboardAnalytics } from '../../models/analytics';
 import { Review } from '../../models/review';
+import { FloorPlan3DComponent } from '../floor-plan-3d/floor-plan-3d.component';
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, FloorPlan3DComponent],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css'
 })
@@ -46,6 +47,11 @@ export class DashboardComponent implements OnInit {
     floorPlanDirty = false;
     showAddTableForm = false;
     newTableData = { capacity: 2, shape: 'round', tableLabel: '' };
+
+    // 3D Floor Plan state
+    floors: number[] = [1];
+    selectedFloor: number = 1;
+    selectedTableId: number | null = null;
 
     newAd: any = {
         mediaType: MediaType.POST,
@@ -152,9 +158,21 @@ export class DashboardComponent implements OnInit {
 
     loadFloorPlan() {
         if (!this.restaurant?.id) return;
+
+        // Fetch floors list
+        this.restaurantService.getFloors(this.restaurant.id).subscribe({
+            next: (floors) => {
+                this.floors = floors.length > 0 ? floors : [1];
+                if (!this.floors.includes(this.selectedFloor)) {
+                    this.selectedFloor = this.floors[0];
+                }
+            },
+            error: () => { this.floors = [1]; }
+        });
+
+        // Fetch all tables
         this.restaurantService.getTableLayout(this.restaurant.id).subscribe({
             next: (tables) => {
-                // Assign default positions in a grid if not set
                 this.floorTables = tables.map((t: any, i: number) => ({
                     ...t,
                     posX: t.posX || (80 + (i % 5) * 140),
@@ -164,6 +182,26 @@ export class DashboardComponent implements OnInit {
             },
             error: (err) => console.error('Error loading floor plan', err)
         });
+    }
+
+    onFloorChanged(floor: number) {
+        this.selectedFloor = floor;
+        this.selectedTable = null;
+        this.selectedTableId = null;
+    }
+
+    on3DTableSelected(tableData: any) {
+        this.selectedTable = this.floorTables.find(t => t.tableId === tableData.tableId) || tableData;
+        this.selectedTableId = tableData.tableId;
+    }
+
+    on3DTableMoved(tableData: any) {
+        const t = this.floorTables.find(ft => ft.tableId === tableData.tableId);
+        if (t) {
+            t.posX = tableData.posX;
+            t.posY = tableData.posY;
+            this.floorPlanDirty = true;
+        }
     }
 
     onTableMouseDown(event: MouseEvent, table: any) {
@@ -245,9 +283,12 @@ export class DashboardComponent implements OnInit {
             tableId: t.tableId,
             posX: t.posX,
             posY: t.posY,
+            posZ: t.posZ || 0,
             tableLabel: t.tableLabel,
             shape: t.shape,
-            capacity: t.capacity
+            capacity: t.capacity,
+            floorNumber: t.floorNumber || 1,
+            rotation: t.rotation || 0
         }));
         this.restaurantService.saveTableLayout(this.restaurant.id, updates).subscribe({
             next: () => {
@@ -263,22 +304,37 @@ export class DashboardComponent implements OnInit {
 
     addNewTable() {
         if (!this.restaurant?.id) return;
-        const label = this.newTableData.tableLabel || 'T' + (this.floorTables.length + 1);
+        const floorPrefix = this.selectedFloor === 1 ? 'G' : 'U';
+        const floorTableCount = this.floorTables.filter(t => (t.floorNumber || 1) === this.selectedFloor).length;
+        const label = this.newTableData.tableLabel || floorPrefix + (floorTableCount + 1);
         const tablePayload = {
             capacity: this.newTableData.capacity,
             shape: this.newTableData.shape,
             tableLabel: label,
             posX: 60 + Math.random() * 200,
-            posY: 60 + Math.random() * 200
+            posY: 60 + Math.random() * 200,
+            floorNumber: this.selectedFloor
         };
         this.restaurantService.addTable(this.restaurant.id, tablePayload).subscribe({
             next: (saved) => {
                 this.floorTables.push(saved);
                 this.showAddTableForm = false;
                 this.newTableData = { capacity: 2, shape: 'round', tableLabel: '' };
+                // Add floor to list if new
+                if (!this.floors.includes(this.selectedFloor)) {
+                    this.floors = [...this.floors, this.selectedFloor].sort();
+                }
             },
             error: (err) => console.error('Error adding table', err)
         });
+    }
+
+    addFloor() {
+        const nextFloor = this.floors.length > 0 ? Math.max(...this.floors) + 1 : 1;
+        this.floors = [...this.floors, nextFloor];
+        this.selectedFloor = nextFloor;
+        this.selectedTable = null;
+        this.selectedTableId = null;
     }
 
     deleteTableFromPlan(table: any) {

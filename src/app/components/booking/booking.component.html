@@ -190,38 +190,20 @@
                             <!-- Loading Overlay -->
                             <div class="floor-loading" *ngIf="fetchingTables">
                                 <span class="spinner"></span>
-                                <p>Loading Floor Plan...</p>
+                                <p>Loading 3D Floor Plan...</p>
                             </div>
 
-                            <!-- Canvas -->
-                            <div class="floor-canvas" *ngIf="!fetchingTables && floorTables.length > 0">
-                                <div *ngFor="let table of floorTables" class="floor-table"
-                                    [class.available]="!table.isBooked && table.hasCapacity"
-                                    [class.occupied]="table.isBooked"
-                                    [class.wrong-size]="!table.isBooked && !table.hasCapacity"
-                                    [class.selected]="selectedTableId === table.tableId"
-                                    [class.round]="table.shape === 'round'" [class.square]="table.shape === 'square'"
-                                    [class.rectangle]="table.shape === 'rectangle'" [style.left.px]="table.posX"
-                                    [style.top.px]="table.posY" (click)="selectFloorTable(table)"
-                                    [title]="table.isBooked ? 'Table is already booked' : (!table.hasCapacity ? 'Insufficient capacity' : 'Available')">
-                                    <span class="table-label">{{ table.tableLabel }}</span>
-                                    <div class="capacity-dots">
-                                        <div *ngFor="let i of [].constructor(table.capacity)" class="dot"></div>
-                                    </div>
-                                </div>
+                            <!-- 3D Floor Plan -->
+                            <div *ngIf="!fetchingTables && floorTables.length > 0" class="floor-3d-container">
+                                <app-floor-plan-3d [tables]="floorTables" [mode]="'customer'" [floors]="floors"
+                                    [selectedFloor]="selectedFloor" [selectedTableId]="selectedTableId"
+                                    (tableSelected)="on3DTableSelected($event)" (floorChanged)="onFloorChanged($event)">
+                                </app-floor-plan-3d>
                             </div>
 
                             <!-- Empty/Error Space -->
                             <div class="floor-empty" *ngIf="!fetchingTables && floorTables.length === 0">
                                 <p>No layout data available for this restaurant.</p>
-                            </div>
-
-                            <!-- Legend -->
-                            <div class="floor-legend" *ngIf="floorTables.length > 0">
-                                <div class="legend-item"><span class="dot available"></span> Available</div>
-                                <div class="legend-item"><span class="dot occupied"></span> Occupied</div>
-                                <div class="legend-item"><span class="dot wrong-size"></span> Wrong Size</div>
-                                <div class="legend-item"><span class="dot selected"></span> Your Pick</div>
                             </div>
                         </div>
                     </div>

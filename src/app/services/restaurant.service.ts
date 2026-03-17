@@ -55,4 +55,8 @@ export class RestaurantService {
     deleteTable(tableId: number): Observable<any> {
         return this.http.delete<any>(`${environment.apiUrl}/api/table-layout/table/${tableId}`);
     }
+
+    getFloors(restaurantId: number): Observable<number[]> {
+        return this.http.get<number[]>(`${environment.apiUrl}/api/table-layout/${restaurantId}/floors`);
+    }
 }

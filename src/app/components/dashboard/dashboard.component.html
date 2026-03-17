@@ -206,9 +206,12 @@
         <div class="floor-plan-header">
             <div class="section-title" style="margin-bottom: 0">
                 <span class="section-icon">🗺️</span>
-                <h2>Table Layout Manager</h2>
+                <h2>3D Table Layout Manager</h2>
             </div>
             <div class="floor-plan-actions">
+                <button class="fp-btn fp-btn-floor" (click)="addFloor()">
+                    <span>🏢</span> Add Floor
+                </button>
                 <button class="fp-btn fp-btn-add" (click)="showAddTableForm = !showAddTableForm">
                     <span>+</span> Add Table
                 </button>
@@ -223,7 +226,7 @@
 
         <!-- Add Table Form -->
         <div class="add-table-form glass-card" *ngIf="showAddTableForm">
-            <h3>Add New Table</h3>
+            <h3>Add New Table to {{ selectedFloor === 1 ? 'Ground Floor' : 'Floor ' + selectedFloor }}</h3>
             <div class="add-table-fields">
                 <div class="form-group">
                     <label>Label</label>
@@ -245,44 +248,16 @@
             </div>
         </div>
 
-        <!-- Canvas + Sidebar Layout -->
+        <!-- 3D Floor Plan + Sidebar Layout -->
         <div class="floor-plan-layout">
 
-            <!-- The Floor Canvas -->
+            <!-- The 3D Floor Plan Component -->
             <div class="floor-canvas-wrapper">
-                <div class="floor-canvas" #floorCanvas (click)="deselectTable()">
-
-                    <!-- Grid overlay -->
-                    <div class="canvas-grid"></div>
-
-                    <!-- Draggable Tables -->
-                    <div *ngFor="let table of floorTables" class="floor-table" [ngClass]="getShapeClass(table)"
-                        [class.selected]="selectedTable?.tableId === table.tableId"
-                        [class.dragging]="isDragging && selectedTable?.tableId === table.tableId"
-                        [style.left.px]="table.posX" [style.top.px]="table.posY"
-                        (mousedown)="onTableMouseDown($event, table)"
-                        (click)="$event.stopPropagation(); selectTable(table)">
-                        <div class="table-inner">
-                            <span class="table-label">{{ table.tableLabel }}</span>
-                            <span class="table-capacity">{{ table.capacity }}p</span>
-                        </div>
-                        <!-- Chair indicators -->
-                        <div class="chairs" *ngIf="table.shape === 'round'">
-                            <span class="chair"
-                                *ngFor="let c of [].constructor(table.capacity > 8 ? 8 : table.capacity); let i = index"
-                                [style.transform]="'rotate(' + (i * (360 / (table.capacity > 8 ? 8 : table.capacity))) + 'deg) translateY(-48px)'">
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Empty state -->
-                    <div *ngIf="floorTables.length === 0" class="canvas-empty">
-                        <div class="empty-icon">🪑</div>
-                        <h3>No Tables Yet</h3>
-                        <p>Click "Add Table" to start designing your floor plan</p>
-                    </div>
-
-                </div>
+                <app-floor-plan-3d [tables]="floorTables" [mode]="'admin'" [floors]="floors"
+                    [selectedFloor]="selectedFloor" [selectedTableId]="selectedTableId"
+                    (tableSelected)="on3DTableSelected($event)" (tableMoved)="on3DTableMoved($event)"
+                    (floorChanged)="onFloorChanged($event)">
+                </app-floor-plan-3d>
             </div>
 
             <!-- Properties Sidebar -->
@@ -308,10 +283,15 @@
                         </select>
                     </div>
                     <div class="prop-group">
+                        <label>Floor</label>
+                        <span class="floor-badge">{{ selectedTable.floorNumber === 1 ? 'Ground' : 'Floor ' +
+                            selectedTable.floorNumber }}</span>
+                    </div>
+                    <div class="prop-group">
                         <label>Position</label>
                         <div class="pos-display">
                             <span>X: {{ selectedTable.posX }}</span>
-                            <span>Y: {{ selectedTable.posY }}</span>
+                            <span>Z: {{ selectedTable.posY }}</span>
                         </div>
                     </div>
                     <button class="fp-btn fp-btn-delete" (click)="deleteTableFromPlan(selectedTable)">
@@ -320,15 +300,15 @@
                 </div>
                 <ng-template #noSelection>
                     <div class="sidebar-empty">
-                        <div class="sidebar-empty-icon">👆</div>
-                        <h4>Select a Table</h4>
-                        <p>Click on a table to edit its properties, or drag to reposition.</p>
+                        <div class="sidebar-empty-icon">🏗️</div>
+                        <h4>3D Layout Editor</h4>
+                        <p>Click on a table in the 3D view to select it. Drag tables to reposition them.</p>
                     </div>
                 </ng-template>
 
                 <!-- Legend -->
                 <div class="floor-legend">
-                    <h4>Shapes</h4>
+                    <h4>Table Shapes</h4>
                     <div class="legend-row">
                         <span class="legend-shape legend-round"></span> Round
                     </div>
